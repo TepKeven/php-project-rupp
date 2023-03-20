@@ -1,6 +1,7 @@
 <?php
 
 require_once("./Model.php");
+require("../../../conn.php");
 
 class Customer implements Model {
 
