@@ -1,7 +1,8 @@
 <?php
 
-require_once("./Model.php");
-require("../../../conn.php");
+// The File Path is looked at from the index.php file
+require_once("./model/Model.php");
+require("./conn.php");
 
 class Customer implements Model {
 
@@ -24,6 +25,7 @@ class Customer implements Model {
         $sql = "SELECT * FROM customers WHERE customer_id = :customer_id";
 
         $stmt = $conn->prepare($sql);
+        
         $stmt->execute([
             "customer_id" => $customer_id
         ]);
@@ -37,27 +39,61 @@ class Customer implements Model {
 
         global $conn;
 
-        $name = $_POST["customer_username"];
-        $age = $_POST["customer_age"];
-        $gender = $_POST["customer_gender"];
-        $dob = $_POST["customer_dob"];
-        $email = $_POST["customer_email"];
-        $telephone = $_POST["customer_telephone"];
-        $address = $_POST["customer_address"];
-        $status = intval($_POST["customer_status"]);
+        $customer_first_name = $_POST["customer_first_name"];
+        $customer_last_name = $_POST["customer_last_name"];
+        $customer_email = $_POST["customer_email"];
+        $customer_telephone = $_POST["customer_telephone"];
+        $customer_image = $_FILES["customer_image"];
+        $customer_password = $_POST["customer_password"];
+        $customer_salt = substr(uniqid("",true), -5);
+        $customer_newsletter = intval($_POST["customer_newsletter"]);
+        $customer_address_id = 0;
+        $customer_ip = $_SERVER['REMOTE_ADDR'];
+        $customer_status = $_POST["customer_status"];
 
         $data = [
-            "name" => $name,
-            "age" => $age,
-            "gender" => $gender,
-            "dob" => $dob,
-            "email" => $email,
-            "telephone" => $telephone,
-            "address" => $address,
-            "status" => $status
+            "first_name" => $customer_first_name,
+            "last_name" => $customer_last_name,
+            "email" => $customer_email,
+            "telephone" => $customer_telephone,
+            "password" => sha1($customer_password + $customer_salt),
+            "salt" => $customer_salt,
+            "newsletter" => $customer_newsletter,
+            "address_id" => $customer_address_id,
+            "ip" => $customer_ip,
+            "status" => $customer_status
         ];
 
-        $sql = "INSERT INTO customers(name,age,gender,dob,email,telephone,address,status) VALUES(:name,:age,:gender,:dob,:email,:telephone,:address,:status)";
+        $sql = "INSERT INTO customers(first_name,last_name,email,telephone,password,salt,newsletter,address_id,ip,status) VALUES(:first_name,:last_name,:email,:telephone,:password,:salt,:newsletter,:address_id,:ip,:status)";
+        
+        if(isset($_FILES["customer_image"]) && !empty($_FILES["customer_image"])){
+
+            if(file_exists($_FILES["customer_image"]["tmp_name"]) && is_uploaded_file($_FILES["customer_image"]["tmp_name"])){
+                
+                $target_dir = "public/images/customer/";
+                $image_extension = strtolower(pathinfo($customer_image["name"], PATHINFO_EXTENSION));
+                $target_file = uniqid("", true) . "." . $image_extension;
+
+                $checkIfImage = getimagesize($customer_image["tmp_name"]);
+
+                if($checkIfImage !== false) {
+
+                    if(in_array($image_extension, ["jpg", "png", "jpeg", "gif"])) {
+                        
+                        move_uploaded_file($customer_image["tmp_name"], $target_dir . $target_file);
+
+                        $data["image"] = $target_file;
+                        $sql = "INSERT INTO customers(first_name,last_name,email,telephone,image,password,salt,newsletter,address_id,ip,status) VALUES(:first_name,:last_name,:email,:telephone,:image,:password,:salt,:newsletter,:address_id,:ip,:status)";
+                    }
+
+                } else {
+                    
+                    return "This is not an image. Please try again.";
+                }
+            }
+
+        }
+        
         $stmt = $conn->prepare($sql);
         $result = $stmt->execute($data);
        
@@ -68,30 +104,63 @@ class Customer implements Model {
 
         global $conn;
 
-        $name = $_POST["customer_username"];
-        $age = $_POST["customer_age"];
-        $gender = $_POST["customer_gender"];
-        $dob = $_POST["customer_dob"];
-        $email = $_POST["customer_email"];
-        $telephone = $_POST["customer_telephone"];
-        $address = $_POST["customer_address"];
-        $status = intval($_POST["customer_status"]);
+        $customer_first_name = $_POST["customer_first_name"];
+        $customer_last_name = $_POST["customer_last_name"];
+        $customer_email = $_POST["customer_email"];
+        $customer_telephone = $_POST["customer_telephone"];
+        $customer_image = $_FILES["customer_image"];
+        $customer_password = $_POST["customer_password"];
+        $customer_salt = substr(uniqid("",true), -5);
+        $customer_newsletter = intval($_POST["customer_newsletter"]);
+        $customer_address_id = 0;
+        $customer_ip = $_SERVER['REMOTE_ADDR'];
+        $customer_status = $_POST["customer_status"];
 
-        $customer_id = intval($_GET["customer_id"]);
-
+        $customer_id = $_GET["customer_id"];
+ 
         $data = [
-            "name" => $name,
-            "age" => $age,
-            "gender" => $gender,
-            "dob" => $dob,
-            "email" => $email,
-            "telephone" => $telephone,
-            "address" => $address,
-            "status" => $status,
+            "first_name" => $customer_first_name,
+            "last_name" => $customer_last_name,
+            "email" => $customer_email,
+            "telephone" => $customer_telephone,
+            "password" => sha1($customer_password + $customer_salt),
+            "salt" => $customer_salt,
+            "newsletter" => $customer_newsletter,
+            "address_id" => $customer_address_id,
+            "ip" => $customer_ip,
+            "status" => $customer_status,
             "customer_id" => $customer_id
         ];
 
-        $sql = "UPDATE customers SET name=:name, age=:age, gender=:gender, dob=:dob, email=:email, telephone=:telephone, address=:address, status=:status WHERE customer_id=:customer_id";
+        $sql = "UPDATE customers SET first_name=:first_name,last_name=:last_name,email=:email,telephone=:telephone,password=:password,salt=:salt,newsletter=:newsletter,address_id=:address_id,ip=:ip,status=:status WHERE customer_id = :customer_id";
+        
+        if(isset($_FILES["customer_image"]) && !empty($_FILES["customer_image"])){
+
+            if(file_exists($_FILES["customer_image"]["tmp_name"]) && is_uploaded_file($_FILES["customer_image"]["tmp_name"])){
+                
+                $target_dir = "public/images/customer/";
+                $image_extension = strtolower(pathinfo($customer_image["name"], PATHINFO_EXTENSION));
+                $target_file = uniqid("", true) . "." . $image_extension;
+
+                $checkIfImage = getimagesize($customer_image["tmp_name"]);
+
+                if($checkIfImage !== false) {
+
+                    if(in_array($image_extension, ["jpg", "png", "jpeg", "gif"])) {
+                        
+                        move_uploaded_file($customer_image["tmp_name"], $target_dir . $target_file);
+
+                        $data["image"] = $target_file;
+                        $sql = "UPDATE customers SET first_name=:first_name,last_name=:last_name,email=:email,telephone=:telephone,image=:image,password=:password,salt=:salt,newsletter=:newsletter,address_id=:address_id,ip=:ip,status=:status WHERE customer_id = :customer_id";
+                    }
+
+                } else {
+                    
+                    return "This is not an image. Please try again.";
+                }
+            }
+
+        }
         $stmt = $conn->prepare($sql);
         $result = $stmt->execute($data); // true or false
         return $result;

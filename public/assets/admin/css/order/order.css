@@ -1,0 +1,3 @@
+button.btn-order-product > *{
+    pointer-events: none;
+}
