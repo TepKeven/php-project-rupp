@@ -1,6 +1,7 @@
 <?php
 
 // The File Path is looked at from the index.php file
+require_once("./model/Address.php");
 require_once("./model/Model.php");
 require("./conn.php");
 
@@ -51,12 +52,13 @@ class Customer implements Model {
         $customer_ip = $_SERVER['REMOTE_ADDR'];
         $customer_status = $_POST["customer_status"];
 
+
         $data = [
             "first_name" => $customer_first_name,
             "last_name" => $customer_last_name,
             "email" => $customer_email,
             "telephone" => $customer_telephone,
-            "password" => sha1($customer_password + $customer_salt),
+            "password" => sha1($customer_password . $customer_salt),
             "salt" => $customer_salt,
             "newsletter" => $customer_newsletter,
             "address_id" => $customer_address_id,
@@ -96,6 +98,12 @@ class Customer implements Model {
         
         $stmt = $conn->prepare($sql);
         $result = $stmt->execute($data);
+
+        if($result){
+
+            $result = Address::create();
+
+        }
        
         return $result;
     }
@@ -123,8 +131,6 @@ class Customer implements Model {
             "last_name" => $customer_last_name,
             "email" => $customer_email,
             "telephone" => $customer_telephone,
-            "password" => sha1($customer_password + $customer_salt),
-            "salt" => $customer_salt,
             "newsletter" => $customer_newsletter,
             "address_id" => $customer_address_id,
             "ip" => $customer_ip,
@@ -132,7 +138,7 @@ class Customer implements Model {
             "customer_id" => $customer_id
         ];
 
-        $sql = "UPDATE customers SET first_name=:first_name,last_name=:last_name,email=:email,telephone=:telephone,password=:password,salt=:salt,newsletter=:newsletter,address_id=:address_id,ip=:ip,status=:status WHERE customer_id = :customer_id";
+        $sql = "UPDATE customers SET first_name=:first_name,last_name=:last_name,email=:email,telephone=:telephone,newsletter=:newsletter,address_id=:address_id,ip=:ip,status=:status WHERE customer_id = :customer_id";
         
         if(isset($_FILES["customer_image"]) && !empty($_FILES["customer_image"])){
 
@@ -151,7 +157,15 @@ class Customer implements Model {
                         move_uploaded_file($customer_image["tmp_name"], $target_dir . $target_file);
 
                         $data["image"] = $target_file;
-                        $sql = "UPDATE customers SET first_name=:first_name,last_name=:last_name,email=:email,telephone=:telephone,image=:image,password=:password,salt=:salt,newsletter=:newsletter,address_id=:address_id,ip=:ip,status=:status WHERE customer_id = :customer_id";
+                        $sql = "UPDATE customers SET first_name=:first_name,last_name=:last_name,email=:email,telephone=:telephone,image=:image,newsletter=:newsletter,address_id=:address_id,ip=:ip,status=:status WHERE customer_id = :customer_id";
+                    
+                        if(isset($_POST["customer_password"]) && !empty($_POST["customer_password"])){
+            
+                            $sql = "UPDATE customers SET first_name=:first_name,last_name=:last_name,email=:email,telephone=:telephone,image=:image,password=:password,salt=:salt,newsletter=:newsletter,address_id=:address_id,ip=:ip,status=:status WHERE customer_id = :customer_id";
+                            $data["password"] = sha1($customer_password . $customer_salt);
+                            $data["salt"] =  $customer_salt;
+                        }
+                    
                     }
 
                 } else {
@@ -160,9 +174,24 @@ class Customer implements Model {
                 }
             }
 
+            else if(isset($_POST["customer_password"]) && !empty($_POST["customer_password"])){
+            
+                $sql = "UPDATE customers SET first_name=:first_name,last_name=:last_name,email=:email,telephone=:telephone,password=:password,salt=:salt,newsletter=:newsletter,address_id=:address_id,ip=:ip,status=:status WHERE customer_id = :customer_id";
+                $data["password"] = sha1($customer_password . $customer_salt);
+                $data["salt"] =  $customer_salt;
+            }
+
         }
+
         $stmt = $conn->prepare($sql);
         $result = $stmt->execute($data); // true or false
+
+        if($result){
+
+           $result = Address::update();
+
+        }
+
         return $result;
     }
 
@@ -182,6 +211,13 @@ class Customer implements Model {
             ]);
 
             array_push($success,$result);
+
+        }
+
+        if(!in_array(false, $success)){
+
+            $result = Address::deleteByCustomer($customer_ids);
+            return $result;
         }
 
         return !in_array(false, $success);

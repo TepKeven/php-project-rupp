@@ -1,18 +1,18 @@
 <?php
 
-  require_once("./model/Category.php");
+  require_once("./model/Customer.php");
 
   if(isset($_POST) && !empty($_POST)){
 
-      $category_ids = json_decode( $_POST["deleted_category_ids"]);
+      $customer_ids = json_decode( $_POST["deleted_customer_ids"]);
 
-      $result = Category::delete($category_ids);
+      $result = Customer::delete($customer_ids);
 
       
       
   }
 
-  $stmt = Category::findAll();
+  $stmt = Customer::findAll();
 
 ?>
 
@@ -205,13 +205,13 @@
         <div class="content-wrapper">
           <div class="row">    
             <div class="col-lg-12 grid-margin stretch-card">
-              <div class="card form-category" id="form-category">
+              <div class="card form-customer" id="form-customer">
                 <div class="card-body">
                 <div class="page-heading d-flex align-items-center justify-content-between">
-                  <h3>Category</h3>
+                  <h3>Customers</h3>
                   <div class="pull-right">
-                    <a href="/admin/category/add" data-toggle="tooltip" title="New" class="btn btn-info" data-original-title="Save"><i class="ti-plus"></i></a>
-                    <a href="#" data-toggle="tooltip" title="Delete" class="btn btn-danger" data-original-title="Delete" onclick="deleteCategories()"><i class="ti-trash"></i></a>
+                    <a href="/admin/customer/add" data-toggle="tooltip" title="New" class="btn btn-info" data-original-title="Save"><i class="ti-plus"></i></a>
+                    <a href="#" data-toggle="tooltip" title="Delete" class="btn btn-danger" data-original-title="Delete" onclick="deleteCustomers()"><i class="ti-trash"></i></a>
                   </div>
                 </div>
                   <div class="table-responsive pt-3">
@@ -220,11 +220,11 @@
                         <tr>
                           <th scope="col" class="text-center align-middle"><input type="checkbox" onchange="checkAllCheckboxes(event)"/> </th>
                           <th scope="col" class="text-center align-middle">#</th>
-                          <th scope="col" class="text-center align-middle">Image</th>
+                          <th scope="col" class="text-center align-middle">Profile</th>
                           <th scope="col" class="text-center align-middle">Name</th>
-                          <th scope="col" class="text-center align-middle">Description</th>
-                          <th scope="col" class="text-center align-middle">Parent Category</th>
-                          <th scope="col" class="text-center align-middle">Sort Order</th>
+                          <th scope="col" class="text-center align-middle">Email</th>
+                          <th scope="col" class="text-center align-middle">Telephone</th>
+                          <th scope="col" class="text-center align-middle">IP Address</th>
                           <th scope="col" class="text-center align-middle">Status</th>
                           <th scope="col" class="text-center align-middle">Actions</th>
                         </tr>
@@ -241,18 +241,18 @@
                             $i++;
                       ?>          
                             <tr>
-                                <td scope="col" class="text-center align-middle"><input type="checkbox" class="table-checkbox" name="category_checkbox[]" value=<?=$row["category_id"]?> /></td>
+                                <td scope="col" class="text-center align-middle"><input type="checkbox" class="table-checkbox" name="customer_checkbox[]" value=<?=$row["customer_id"]?> /></td>
                                 <td scope="row" class="text-center align-middle"><?=$i?></td> 
                                 <td class="text-center align-middle">
-                                  <img src=<?=$row["image"] == null ? "/public/assets/no_image.png" : "/public/images/category/" . $row["image"]?> width="100" height="100" />
+                                  <img src=<?=$row["image"] == null ? "/public/assets/no_image.png" : "/public/images/customer/" . $row["image"]?> width="100" height="100" />
                                 </td>
-                                <td class="text-center align-middle"><?=$row["name"]?></td>
-                                <td class="text-center align-middle"><?=$row["description"]?></td>
-                                <td class="text-center align-middle"><?=Category::findOne($row["parent_id"])["name"] ?></td>
-                                <td class="text-center align-middle"><?=$row["sort_order"]?></td>
+                                <td class="text-center align-middle"><?=$row["first_name"] . " " . $row["last_name"] ?></td>
+                                <td class="text-center align-middle"><?=$row["email"]?></td>
+                                <td class="text-center align-middle"><?=$row["telephone"] ?></td>
+                                <td class="text-center align-middle"><?=$row["ip"]?></td>
                                 <td class="text-center align-middle"><?=$row["status"]?></td>
                                 <td class="text-center align-middle">
-                                    <a href="/admin/category/edit?category_id=<?=$row["category_id"]?>" title="Edit" class="btn btn-primary p-2"><i class="ti-pencil"></i></a>
+                                    <a href="/admin/customer/edit?customer_id=<?=$row["customer_id"]?>" title="Edit" class="btn btn-primary p-2"><i class="ti-pencil"></i></a>
                                 </td>
                             </tr> 
                       <?php 

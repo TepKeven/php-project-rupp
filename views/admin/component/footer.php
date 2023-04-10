@@ -22,6 +22,7 @@
 <script src="/public/assets/admin/js/category/category.js"></script>
 <script src="/public/assets/admin/js/product/product.js"></script>
 <script src="/public/assets/admin/js/order/order.js"></script>
+<script src="/public/assets/admin/js/customer/customer.js"></script>
 
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.7.3/dist/sweetalert2.all.min.js"></script>
 
