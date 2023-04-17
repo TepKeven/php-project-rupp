@@ -29,6 +29,7 @@
                                     <th>Product</th>
                                     <th>Quantity</th>
                                     <th>Total</th>
+                                    <th>Tax</th>
                                     <th></th>
                                 </tr>
                             </thead>
@@ -51,6 +52,7 @@
                                         </div>
                                     </td>
                                     <td class="cart__price">$ 30.00</td>
+                                    <td class="cart__tax">$ 30.00</td>
                                     <td class="cart__close"><i class="fa fa-close"></i></td>
                                 </tr>
                                 <tr>
@@ -71,6 +73,7 @@
                                         </div>
                                     </td>
                                     <td class="cart__price">$ 32.50</td>
+                                    <td class="cart__tax">$ 30.00</td>
                                     <td class="cart__close"><i class="fa fa-close"></i></td>
                                 </tr>
                                 <tr>
@@ -91,6 +94,7 @@
                                         </div>
                                     </td>
                                     <td class="cart__price">$ 47.00</td>
+                                    <td class="cart__tax">$ 30.00</td>
                                     <td class="cart__close"><i class="fa fa-close"></i></td>
                                 </tr>
                                 <tr>
@@ -111,6 +115,7 @@
                                         </div>
                                     </td>
                                     <td class="cart__price">$ 30.00</td>
+                                    <td class="cart__tax">$ 30.00</td>
                                     <td class="cart__close"><i class="fa fa-close"></i></td>
                                 </tr>
                             </tbody>
