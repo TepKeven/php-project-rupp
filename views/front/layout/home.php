@@ -1,16 +1,38 @@
- <!-- Hero Section Begin -->
+<?php
+
+require_once("./model/Product.php");
+require_once("./model/SlideShow.php");
+
+$stmt = Slideshow::findAll();
+
+// print_r($stmt->fetch());
+
+?>
+
+
+
+<!-- Hero Section Begin -->
  <section class="hero">
         <div class="hero__slider owl-carousel">
-            <div class="hero__items set-bg" data-setbg="/public/assets/client/img/hero/hero-1.jpg">
+    <?php
+        
+        if ($stmt->rowCount() > 0) {
+
+            $i = 0;
+
+            while($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
+
+            $i++;
+        ?>          
+            <div class="hero__items set-bg" data-setbg="<?= "/public/images/slideshow/" . $row["image"]?>">
                 <div class="container">
                     <div class="row">
                         <div class="col-xl-5 col-lg-7 col-md-8">
                             <div class="hero__text">
-                                <h6>Summer Collection</h6>
-                                <h2>Fall - Winter Collections 2030</h2>
-                                <p>A specialist label creating luxury essentials. Ethically crafted with an unwavering
-                                commitment to exceptional quality.</p>
-                                <a href="#" class="primary-btn">Shop now <span class="arrow_right"></span></a>
+                                <!-- <h6>Summer Collection</h6> -->
+                                <h2><?=$row["title"]?></h2>
+                                <p><?=$row["description"]?></p>
+                                <a href="/shop" class="primary-btn">Shop now <span class="arrow_right"></span></a>
                                 <div class="hero__social">
                                     <a href="#"><i class="fa fa-facebook"></i></a>
                                     <a href="#"><i class="fa fa-twitter"></i></a>
@@ -22,27 +44,10 @@
                     </div>
                 </div>
             </div>
-            <div class="hero__items set-bg" data-setbg="/public/assets/client/img/hero/hero-2.jpg">
-                <div class="container">
-                    <div class="row">
-                        <div class="col-xl-5 col-lg-7 col-md-8">
-                            <div class="hero__text">
-                                <h6>Summer Collection</h6>
-                                <h2>Fall - Winter Collections 2030</h2>
-                                <p>A specialist label creating luxury essentials. Ethically crafted with an unwavering
-                                commitment to exceptional quality.</p>
-                                <a href="#" class="primary-btn">Shop now <span class="arrow_right"></span></a>
-                                <div class="hero__social">
-                                    <a href="#"><i class="fa fa-facebook"></i></a>
-                                    <a href="#"><i class="fa fa-twitter"></i></a>
-                                    <a href="#"><i class="fa fa-pinterest"></i></a>
-                                    <a href="#"><i class="fa fa-instagram"></i></a>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
+            <?php
+                 }
+            } 
+            ?>
         </div>
     </section>
     <!-- Hero Section End -->
@@ -502,4 +507,5 @@
             </div>
         </div>
     </section>
+
     <!-- Latest Blog Section End -->

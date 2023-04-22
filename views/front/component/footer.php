@@ -79,12 +79,13 @@
     <!-- Js Plugins -->
     <script src="/public/assets/client/js/jquery-3.3.1.min.js"></script>
     <script src="/public/assets/client/js/bootstrap.min.js"></script>
+    <!-- <script src="/public/assets/client/js/bootstrap1.min.js"></script> -->
     <script src="/public/assets/client/js/jquery.nice-select.min.js"></script>
     <script src="/public/assets/client/js/jquery.nicescroll.min.js"></script>
     <script src="/public/assets/client/js/jquery.magnific-popup.min.js"></script>
     <script src="/public/assets/client/js/jquery.countdown.min.js"></script>
     <script src="/public/assets/client/js/jquery.slicknav.js"></script>
-    <script src="/public/assets/client/js/mixitup.min.js"></script>
+    <script src="/public/assets/client/js/mixiztup.min.js"></script>
     <script src="/public/assets/client/js/owl.carousel.min.js"></script>
     <script src="/public/assets/client/js/main.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.7.3/dist/sweetalert2.all.min.js"></script>

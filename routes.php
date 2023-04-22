@@ -34,12 +34,22 @@
                 case "/shop":
                     $file_path = "./views/front/layout/shop.php";
                     break;
-                case "/cart":
-                    $file_path = "./views/front/layout/about.php";
+                case "/shopping-cart":
+                    $file_path = "./views/front/layout/shopping-cart.php";
                     break;
+                case "/login":
+                    $file_path = "./views/front/layout/login.php";
+                    break;
+                case "/register":
+                    $file_path = "./views/front/layout/register.php";
+                    break;
+
+
+
+                    
                 ### Admin Path
                 case "/admin/login":
-                    $file_path = "./views/front/layout/shop.php";
+                    $file_path = "./views/admin/layout/login/login.php";
                     break;
                 case "/admin":
                     $file_path = "./views/admin/layout/dashboard.php";
