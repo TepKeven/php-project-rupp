@@ -181,6 +181,74 @@ class Order implements Model {
         return !in_array(false, $success);
     }
 
+    public static function countRevenue($order_num = NULL){
+
+        global $conn;
+
+        if($order_num == NULL){
+
+            $sql = "SELECT SUM(order_table.total) AS total FROM (SELECT * FROM orders) AS order_table";
+        }
+        else{
+            
+            $sql = "SELECT SUM(order_table.total) AS total FROM (SELECT * FROM orders LIMIT :order_num) AS order_table";
+        }
+
+        $stmt = $conn->prepare($sql);
+
+        $stmt->bindValue(":order_num", (int) $order_num, PDO::PARAM_INT);
+
+        $stmt->execute();
+
+        $result = $stmt->fetch(PDO::FETCH_ASSOC);
+
+        return $result["total"];
+
+    }
+
+    public static function countOrder(){
+
+        global $conn;
+
+        $sql = "SELECT COUNT(order_id) AS order_count FROM orders";
+
+        $stmt = $conn->prepare($sql);
+
+        $stmt->execute();
+
+        $result = $stmt->fetch(PDO::FETCH_ASSOC);
+
+        return $result["order_count"];
+    }
+
+    public static function orderByMonth(){
+
+        global $conn;
+
+        $sql = "SELECT MONTH(createdAt) AS month, COUNT(order_id) AS order_num FROM orders GROUP BY MONTH(createdAt) ";
+
+        $stmt = $conn->prepare($sql);
+
+        $stmt->execute();
+
+        return $stmt->fetchAll();
+
+    }
+
+    public static function RevenueByCountryMonth(){
+
+        global $conn;
+
+        $sql = "SELECT country, country_id, SUM(total) AS total, MONTH(createdAt) AS month FROM orders GROUP BY country_id, MONTH(createdAt)";
+
+        $stmt = $conn->prepare($sql);
+
+        $stmt->execute();
+
+        return $stmt->fetchAll();
+
+    }
+
   }
 
 ?>

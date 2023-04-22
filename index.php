@@ -1,5 +1,6 @@
 <?php
 
+    require_once("./middleware/admin/Auth.php");
     require_once("./routes.php");
 
     $relative_path = $_SERVER["REQUEST_URI"];

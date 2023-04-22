@@ -19,6 +19,18 @@ class Customer implements Model {
         return $stmt;
     } 
 
+    public static function findAllSubscribers(){
+
+        global $conn;
+
+        $sql = "SELECT * FROM customers WHERE newsletter = 1";
+
+        $stmt = $conn->prepare($sql);
+        $stmt->execute();
+
+        return $stmt;
+    }
+
     public static function findOne($customer_id){
 
         global $conn;

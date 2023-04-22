@@ -1,18 +1,18 @@
-function deleteProducts(){
+function deleteUsers(){
 
-    var product_delete_ids = [];
-    var product_checkboxes = document.getElementsByClassName("table-checkbox");
+    var user_delete_ids = [];
+    var user_checkboxes = document.getElementsByClassName("table-checkbox");
 
-    for(let product_checkbox of product_checkboxes){
+    for(let user_checkbox of user_checkboxes){
 
-        if(product_checkbox.checked == true){
+        if(user_checkbox.checked == true){
 
-            product_delete_ids.push(product_checkbox.value)
+            user_delete_ids.push(user_checkbox.value)
         }
     }
 
     Swal.fire({
-        title: 'Do you want to delete these products?',
+        title: 'Do you want to delete these users?',
         // text: 'Do you want to continue',
         icon: 'info',
         showDenyButton: false,
@@ -25,10 +25,10 @@ function deleteProducts(){
             $.ajax({
                 type: "POST",
                 data: {
-                    "deleted_product_ids": JSON.stringify(product_delete_ids)
+                    "deleted_user_ids": JSON.stringify(user_delete_ids)
                 },
                 success: function (response, status, xhr) {
-                  window.location.assign("/admin/product")
+                  window.location.assign("/admin/user")
                 },
                 error: function (jqXhr, textStatus, errorMessage) {
                   console.log(errorMessage);

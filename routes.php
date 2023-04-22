@@ -6,6 +6,7 @@
             
             $file_path = "./views/front/layout/home.php";
             switch($relative_path){
+                
                 ### Client Path
                 case "/":
                     $file_path = "./views/front/layout/home.php";
@@ -37,11 +38,9 @@
                 case "/cart":
                     $file_path = "./views/front/layout/about.php";
                     break;
+
                 ### Admin Path
-                case "/admin/login":
-                    $file_path = "./views/front/layout/shop.php";
-                    break;
-                case "/admin":
+                case "/admin/dashboard":
                     $file_path = "./views/admin/layout/dashboard.php";
                     break;
                 case "/admin/category":
@@ -89,11 +88,45 @@
                 case strpos($relative_path, "/admin/customer/edit") !== false:
                     $file_path = "./views/admin/layout/customer/customerEdit.php";
                     break;
+                case "/admin/user":
+                    $file_path = "./views/admin/layout/user/user.php";
+                    break;
+                case "/admin/user/add":
+                    $file_path = "./views/admin/layout/user/userAdd.php";
+                    break;
+                case strpos($relative_path, "/admin/user/edit") !== false:
+                    $file_path = "./views/admin/layout/user/userEdit.php";
+                    break;
+                case "/admin/information":
+                    $file_path = "./views/admin/layout/information/information.php";
+                    break;
+                case "/admin/information/add":
+                    $file_path = "./views/admin/layout/information/informationAdd.php";
+                    break;
+                case strpos($relative_path, "/admin/information/edit") !== false:
+                    $file_path = "./views/admin/layout/information/informationEdit.php";
+                    break;
+                case "/admin/newsletter":
+                    $file_path = "./views/admin/layout/newsletter/newsletter.php";
+                    break;
+                case "/admin/setting":
+                    $file_path = "./views/admin/layout/setting/setting.php";
+                    break;
+                case "/admin/login":
+                    $file_path = "./views/admin/layout/auth/login.php";
+                    break;
 
                 ### Admin API
                 case strpos($relative_path, "/api/admin/orderproduct") !== false:
                     $file_path = "./views/admin/api/order/orderProduct.php";
                     break;
+                case strpos($relative_path, "/api/admin/dashboard") !== false:
+                    $file_path = "./views/admin/api/dashboard/dashboard.php";
+                    break;
+
+                ### Default Admin 404 Page 
+                default:
+                    $file_path = "./views/admin/layout/404.php";
             }
 
             return $file_path;

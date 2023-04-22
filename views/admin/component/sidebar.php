@@ -1,6 +1,37 @@
+<?php
+
+    require_once("./model/DashboardItem.php");
+
+    $relative_path = $_SERVER["REQUEST_URI"];
+
+    $dashboard_items = DashboardItem::findAll();
+
+?>
+
 <nav class="sidebar sidebar-offcanvas" id="sidebar">
     <ul class="nav">
-        <li class="nav-item">
+
+    <?php
+                        
+        if ($dashboard_items->rowCount() > 0) {
+
+            foreach($dashboard_items as $dashboard_item){
+    ?>          
+                <li class="nav-item <?= strpos($relative_path . "/", $dashboard_item["href"]) !== false ? "active" : "" ?>">
+                    <a class="nav-link" href="<?=$dashboard_item["href"] ?>">
+                        <i class="icon-grid menu-icon"></i>
+                        <span class="menu-title"><?=$dashboard_item["name"] ?></span>
+                    </a>
+                </li>
+    <?php 
+
+            }
+
+        } 
+
+    ?>    
+
+        <!--<li class="nav-item">
             <a class="nav-link" href="../../index.html">
                 <i class="icon-grid menu-icon"></i>
                 <span class="menu-title">Dashboard</span>
@@ -99,6 +130,6 @@
                 <i class="icon-paper menu-icon"></i>
                 <span class="menu-title">Documentation</span>
             </a>
-        </li>
+        </li> -->
     </ul>
 </nav>
