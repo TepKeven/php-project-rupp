@@ -50,12 +50,12 @@
                 <div class="col-lg-12 text-center">
                     <div class="footer__copyright__text">
                         <!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
-                        <p>Copyright ©
+                        <p>Copyright © 2020 -
                             <script>
                                 document.write(new Date().getFullYear());
-                            </script>2020
+                            </script>
                             All rights reserved | This template is made with <i class="fa fa-heart-o"
-                            aria-hidden="true"></i> by <a href="https://colorlib.com" target="_blank">Colorlib</a>
+                            aria-hidden="true"></i> by <a href="https://colorlib.com" target="_blank">Group 6</a>
                         </p>
                         <!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
                     </div>
@@ -79,14 +79,17 @@
     <!-- Js Plugins -->
     <script src="/public/assets/client/js/jquery-3.3.1.min.js"></script>
     <script src="/public/assets/client/js/bootstrap.min.js"></script>
+    <!-- <script src="/public/assets/client/js/bootstrap1.min.js"></script> -->
     <script src="/public/assets/client/js/jquery.nice-select.min.js"></script>
     <script src="/public/assets/client/js/jquery.nicescroll.min.js"></script>
     <script src="/public/assets/client/js/jquery.magnific-popup.min.js"></script>
     <script src="/public/assets/client/js/jquery.countdown.min.js"></script>
     <script src="/public/assets/client/js/jquery.slicknav.js"></script>
-    <script src="/public/assets/client/js/mixitup.min.js"></script>
+    <script src="/public/assets/client/js/mixiztup.min.js"></script>
     <script src="/public/assets/client/js/owl.carousel.min.js"></script>
     <script src="/public/assets/client/js/main.js"></script>
+    <script src="/public/assets/client/js/base.js"></script>
+    <script src="/public/assets/client/js/cart/cart.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.7.3/dist/sweetalert2.all.min.js"></script>
 </body>
 

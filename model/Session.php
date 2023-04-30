@@ -34,6 +34,22 @@ class Session implements Model {
         return $result;
     }
 
+    public static function findByToken($session_token){
+
+        global $conn;
+
+        $sql = "SELECT * FROM session WHERE token = :token";
+
+        $stmt = $conn->prepare($sql);
+        $stmt->execute([
+            "token" => $session_token
+        ]);
+
+        $result = $stmt->fetch(PDO::FETCH_ASSOC);
+        
+        return $result;
+    }
+
     public static function create()
     {
         
@@ -52,7 +68,8 @@ class Session implements Model {
         $is_customer = 0;
         $token = uniqid("RG6", true);
 
-        $result = self::deleteOldSession($user_email, 0);
+        $result = self::deleteByEmail($user_email, 0);
+        $expired_session = self::deleteExpiredSession();
 
         $sql = "INSERT INTO session(email,data,is_customer,token,expire) VALUES(:email,:data,:is_customer,:token, CURRENT_TIMESTAMP + INTERVAL 2 HOUR)";
 
@@ -87,7 +104,8 @@ class Session implements Model {
         $is_customer = 1;
         $token = uniqid("RG6", true);
 
-        $result = self::deleteOldSession($customer_email, 1);
+        $result = self::deleteByEmail($customer_email, 1);
+        $expired_session = self::deleteExpiredSession();
 
         $sql = "INSERT INTO session(email,data,is_customer,token,expire) VALUES(:email,:data,:is_customer,:token, CURRENT_TIMESTAMP + INTERVAL 24 HOUR)";
 
@@ -119,7 +137,7 @@ class Session implements Model {
         
     }
 
-    public static function deleteOldSession($email, $is_customer){
+    public static function deleteByEmail($email, $is_customer){
 
         global $conn;
 
@@ -132,6 +150,35 @@ class Session implements Model {
         ]);
 
         return $result;
+    }
+
+    public static function deleteByToken($session_token, $is_customer){
+
+        global $conn;
+
+        $sql = "DELETE FROM session WHERE token = :token AND is_customer = :is_customer";
+        $stmt = $conn->prepare($sql);
+
+        $result = $stmt->execute([
+            "token" => $session_token,
+            "is_customer" => $is_customer
+        ]);
+
+        return $result;
+
+    }
+
+    public static function deleteExpiredSession(){
+
+        global $conn;
+
+        $sql = "DELETE FROM session WHERE expire < CURRENT_TIMESTAMP";
+        $stmt = $conn->prepare($sql);
+
+        $result = $stmt->execute();
+
+        return $result;
+
     }
 
     public static function checkOnline($is_customer){
@@ -174,6 +221,23 @@ class Session implements Model {
         global $conn;
 
         $sql = "UPDATE session SET expire = CURRENT_TIMESTAMP + INTERVAL 2 HOUR WHERE token = :token AND is_customer = 0";
+
+        $stmt = $conn->prepare($sql);
+
+        $result = $stmt->execute([
+            "token" => $session_token,
+        ]);
+
+        
+        return $result;
+
+    }
+
+    public static function increaseCustomerSessionTime($session_token){
+
+        global $conn;
+
+        $sql = "UPDATE session SET expire = CURRENT_TIMESTAMP + INTERVAL 24 HOUR WHERE token = :token AND is_customer = 1";
 
         $stmt = $conn->prepare($sql);
 

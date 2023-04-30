@@ -1,3 +1,17 @@
+<?php
+
+    require_once("./model/User.php");
+    require_once("./model/Session.php");
+
+    $session_token = isset($_SESSION["login_token"]) ? $_SESSION["login_token"] : ""; 
+
+    $session = Session::findByToken($session_token);
+
+    $user = User::findByEmail($session["email"]);
+
+?>
+
+
 <nav class="navbar col-lg-12 col-12 p-0 fixed-top d-flex flex-row">
     <div class="text-center navbar-brand-wrapper d-flex align-items-center justify-content-center">
         <a class="navbar-brand brand-logo mr-5" href="index.html"><img src="/public/assets/admin/img/logo.svg" class="mr-2" alt="logo" /></a>
@@ -70,14 +84,14 @@
             </li>
             <li class="nav-item nav-profile dropdown">
                 <a class="nav-link dropdown-toggle" href="#" data-toggle="dropdown" id="profileDropdown">
-                    <img src="/public/assets/admin/img/faces/face28.jpg" alt="profile" />
+                    <img src="<?=$user["image"] == null ? "/public/assets/no_image.png" : "/public/images/user/" . $user["image"] ?>" alt="profile" />
                 </a>
                 <div class="dropdown-menu dropdown-menu-right navbar-dropdown" aria-labelledby="profileDropdown">
                     <a class="dropdown-item">
                         <i class="ti-settings text-primary"></i>
                         Settings
                     </a>
-                    <a class="dropdown-item">
+                    <a class="dropdown-item" onclick="userLogout()">
                         <i class="ti-power-off text-primary"></i>
                         Logout
                     </a>

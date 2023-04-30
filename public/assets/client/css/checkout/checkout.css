@@ -1,0 +1,23 @@
+#order_create_account:checked ~ .caption{
+    display: block;
+}
+
+#order_create_account:not(:checked) ~ .caption{
+    display: none ;
+}
+
+.order-payment:checked ~ .caption{
+    display: block;
+}
+
+.order-payment:not(:checked) ~ .caption{
+    display: none ;
+}
+
+.order-shipping:checked ~ .caption{
+    display: block;
+}
+
+.order-shipping:not(:checked) ~ .caption{
+    display: none ;
+}

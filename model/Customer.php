@@ -2,6 +2,7 @@
 
 // The File Path is looked at from the index.php file
 require_once("./model/Address.php");
+require_once("./model/Session.php");
 require_once("./model/Model.php");
 require("./conn.php");
 
@@ -28,6 +29,21 @@ class Customer implements Model {
         $stmt = $conn->prepare($sql);
         $stmt->execute();
 
+        return $stmt;
+    }
+
+    public static function findByEmail($customer_email){
+
+        global $conn;
+
+        $sql = "SELECT * FROM customers WHERE email = :email";
+
+        $stmt = $conn->prepare($sql);
+        
+        $stmt->execute([
+            "email" => $customer_email
+        ]);
+        
         return $stmt;
     }
 
@@ -62,7 +78,7 @@ class Customer implements Model {
         $customer_newsletter = intval($_POST["customer_newsletter"]);
         $customer_address_id = 0;
         $customer_ip = $_SERVER['REMOTE_ADDR'];
-        $customer_status = $_POST["customer_status"];
+        $customer_status = isset($_POST["customer_status"]) ? $_POST["customer_status"] : 1;
 
 
         $data = [
@@ -77,6 +93,13 @@ class Customer implements Model {
             "ip" => $customer_ip,
             "status" => $customer_status
         ];
+
+        $checkEmailExist = self::findByEmail($customer_email);
+
+        if($checkEmailExist->rowCount() > 0){
+
+            return "Email already exists";
+        }
 
         $sql = "INSERT INTO customers(first_name,last_name,email,telephone,password,salt,newsletter,address_id,ip,status) VALUES(:first_name,:last_name,:email,:telephone,:password,:salt,:newsletter,:address_id,:ip,:status)";
         
@@ -233,6 +256,54 @@ class Customer implements Model {
         }
 
         return !in_array(false, $success);
+    }
+
+    public static function login(){
+
+
+        global $conn;
+
+        $customer_email = $_POST["customer_login_email"];
+        $customer_password = $_POST["customer_login_password"];
+
+        $sql = "SELECT * FROM customers WHERE email = :email";
+
+        $stmt = $conn->prepare($sql);
+        
+        $stmt->execute([
+            "email" => $customer_email
+        ]);
+
+        if($stmt->rowCount() > 0){
+    
+            $customer = $stmt->fetch(PDO::FETCH_ASSOC);
+
+            $sql = "SELECT * FROM customers WHERE email = :email AND password = :password";
+
+            $stmt = $conn->prepare($sql);
+
+            $stmt->execute([
+                "email" => $customer_email,
+                "password" => sha1($customer_password . $customer["salt"])
+            ]);
+
+            if($stmt->rowCount() > 0){
+
+                $token = Session::createCustomerSession(intval($customer["customer_id"]));
+
+                return $token;
+            }
+            else{
+                return -1;
+            }
+
+        }
+        else{
+            
+            return  -1;
+        }
+
+
     }
 
   }

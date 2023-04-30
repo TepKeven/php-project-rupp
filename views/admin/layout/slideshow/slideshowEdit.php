@@ -71,7 +71,7 @@
                                 <label for="slideshow_image" class="col-sm-3 col-form-label">Image</label>
                                 <div class="col-sm-9">
                                     <label for="slideshow_image">
-                                        <img src=<?=$result["image"] == null ? "/public/assets/no_image.png" : "/public/images/slideshow/" . $result["image"]?> width="150" height="150" class="image-input border border-1"/>
+                                        <img src=<?=$result["image"] == null ? "/public/assets/no_image.png" : "/public/images/slideshow/" . $result["image"]?> width="250" height="150" class="image-input border border-1"/>
                                     </label>
                                     <input type="file" id="slideshow_image" name="slideshow_image" class="d-none" onChange="chooseImage(event)"/>
                                 </div>

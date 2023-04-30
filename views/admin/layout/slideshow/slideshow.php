@@ -211,7 +211,7 @@
                   <h3>Slideshow</h3>
                   <div class="pull-right">
                     <a href="/admin/slideshow/add" data-toggle="tooltip" title="New" class="btn btn-info" data-original-title="Save"><i class="ti-plus"></i></a>
-                    <a href="#" data-toggle="tooltip" title="Delete" class="btn btn-danger" data-original-title="Delete" onclick="deleteCategories()"><i class="ti-trash"></i></a>
+                    <a href="#" data-toggle="tooltip" title="Delete" class="btn btn-danger" data-original-title="Delete" onclick="deleteSlideshows()"><i class="ti-trash"></i></a>
                   </div>
                 </div>
                   <div class="table-responsive pt-3">

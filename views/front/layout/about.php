@@ -1,3 +1,21 @@
+<?php
+
+    require_once("./model/Customer.php");
+    require_once("./model/Category.php");
+    require_once("./model/Product.php");
+    require_once("./model/Order.php");
+    require_once("./model/User.php");
+
+    $order_count = Order::countOrder();
+    $product_count = Product::findAll()->rowCount();
+    $category_count = Category::findAll()->rowCount();
+    $customer_count = Customer::findAll()->rowCount();
+
+    $users = User::findLimit(4);
+
+?>
+
+
 <section class="breadcrumb-option">
         <div class="container">
             <div class="row">
@@ -74,7 +92,7 @@
                     </div>
                 </div>
                 <div class="col-lg-6 p-0">
-                    <div class="testimonial__pic set-bg" data-setbg="img/about/testimonial-pic.jpg"></div>
+                    <div class="testimonial__pic set-bg" data-setbg="/public/assets/client/img/about/testimonial-pic.jpg"></div>
                 </div>
             </div>
         </div>
@@ -88,7 +106,7 @@
                 <div class="col-lg-3 col-md-6 col-sm-6">
                     <div class="counter__item">
                         <div class="counter__item__number">
-                            <h2 class="cn_num">102</h2>
+                            <h2 class="cn_num"><?=$customer_count?></h2>
                         </div>
                         <span>Our <br />Clients</span>
                     </div>
@@ -96,7 +114,7 @@
                 <div class="col-lg-3 col-md-6 col-sm-6">
                     <div class="counter__item">
                         <div class="counter__item__number">
-                            <h2 class="cn_num">30</h2>
+                            <h2 class="cn_num"><?=$category_count?></h2>
                         </div>
                         <span>Total <br />Categories</span>
                     </div>
@@ -104,18 +122,18 @@
                 <div class="col-lg-3 col-md-6 col-sm-6">
                     <div class="counter__item">
                         <div class="counter__item__number">
-                            <h2 class="cn_num">102</h2>
+                            <h2 class="cn_num"><?=$product_count?></h2>
                         </div>
-                        <span>In <br />Country</span>
+                        <span>Total <br />Products</span>
                     </div>
                 </div>
                 <div class="col-lg-3 col-md-6 col-sm-6">
                     <div class="counter__item">
                         <div class="counter__item__number">
-                            <h2 class="cn_num">98</h2>
-                            <strong>%</strong>
+                            <h2 class="cn_num"><?=$order_count?></h2>
+                            <strong></strong>
                         </div>
-                        <span>Happy <br />Customer</span>
+                        <span>Happy <br />Orders</span>
                     </div>
                 </div>
             </div>
@@ -135,7 +153,28 @@
                 </div>
             </div>
             <div class="row">
-                <div class="col-lg-3 col-md-6 col-sm-6">
+
+                <?php
+                
+                    while($user = $users->fetch(PDO::FETCH_ASSOC)){
+                            
+                ?>
+
+                    <div class="col-lg-3 col-md-6 col-sm-6">
+                        <div class="team__item">
+                            <img src="<?=$user["image"] == null ? "/public/assets/no_image.png" : "/public/images/user/" . $user["image"] ?>" alt="">
+                            <h4><?=$user["username"] ?></h4>
+                            <span><?=$user["email"]?></span>
+                        </div>
+                    </div>
+                
+                <?php
+                
+                    }
+                
+                ?>
+
+                <!-- <div class="col-lg-3 col-md-6 col-sm-6">
                     <div class="team__item">
                         <img src="/public/assets/client/img/about/team-1.jpg" alt="">
                         <h4>John Smith</h4>
@@ -162,7 +201,7 @@
                         <h4>Lucy Myers</h4>
                         <span>Delivery</span>
                     </div>
-                </div>
+                </div> -->
             </div>
         </div>
     </section>

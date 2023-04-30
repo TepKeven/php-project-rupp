@@ -1,14 +1,27 @@
- <!-- Breadcrumb Section Begin -->
+<?php
+
+    require_once("./model/Order.php");
+    require_once("./model/Country.php");
+    require_once("./model/Payment.php");
+    require_once("./model/Shipment.php");
+
+    $countries = Country::findAll();
+    $payments = Payment::findAll();
+    $shippings = Shipment::findAll();
+
+?>
+
+<!-- Breadcrumb Section Begin -->
  <section class="breadcrumb-option">
         <div class="container">
             <div class="row">
                 <div class="col-lg-12">
                     <div class="breadcrumb__text">
-                        <h4>Check Out</h4>
+                        <h4>Checkout</h4>
                         <div class="breadcrumb__links">
                             <a href="./index.html">Home</a>
                             <a href="./shop.html">Shop</a>
-                            <span>Check Out</span>
+                            <span>Checkout</span>
                         </div>
                     </div>
                 </div>
@@ -21,85 +34,97 @@
     <section class="checkout spad">
         <div class="container">
             <div class="checkout__form">
-                <form action="#">
+                <form method="POST" enctype="multipart/form-data"> 
                     <div class="row">
                         <div class="col-lg-8 col-md-6">
-                            <h6 class="coupon__code"><span class="icon_tag_alt"></span> Have a coupon? <a href="#">Click
-                            here</a> to enter your code</h6>
+                            <!-- <h6 class="coupon__code"><span class="icon_tag_alt"></span> Have a coupon? <a href="#">Click
+                            here</a> to enter your code</h6> -->
                             <h6 class="checkout__title">Billing Details</h6>
                             <div class="row">
                                 <div class="col-lg-6">
                                     <div class="checkout__input">
-                                        <p>Fist Name<span>*</span></p>
-                                        <input type="text">
+                                        <label for="order_first_name">First Name<span>*</span></label>
+                                        <input class="form-control" type="text" name="order_first_name" id="order_first_name">
                                     </div>
                                 </div>
                                 <div class="col-lg-6">
                                     <div class="checkout__input">
-                                        <p>Last Name<span>*</span></p>
-                                        <input type="text">
+                                        <label for="order_last_name">Last Name<span>*</span></label>
+                                        <input class="form-control" type="text" name="order_last_name" id="order_last_name">
                                     </div>
                                 </div>
-                            </div>
-                            <div class="checkout__input">
-                                <p>Country<span>*</span></p>
-                                <input type="text">
-                            </div>
-                            <div class="checkout__input">
-                                <p>Address<span>*</span></p>
-                                <input type="text" placeholder="Street Address" class="checkout__input__add">
-                                <input type="text" placeholder="Apartment, suite, unite ect (optinal)">
-                            </div>
-                            <div class="checkout__input">
-                                <p>Town/City<span>*</span></p>
-                                <input type="text">
-                            </div>
-                            <div class="checkout__input">
-                                <p>Country/State<span>*</span></p>
-                                <input type="text">
-                            </div>
-                            <div class="checkout__input">
-                                <p>Postcode / ZIP<span>*</span></p>
-                                <input type="text">
                             </div>
                             <div class="row">
                                 <div class="col-lg-6">
                                     <div class="checkout__input">
-                                        <p>Phone<span>*</span></p>
-                                        <input type="text">
+                                        <label for="order_email">Email Address<span>*</span></label>
+                                        <input class="form-control" type="text" name="order_email" id="order_email">
                                     </div>
                                 </div>
                                 <div class="col-lg-6">
                                     <div class="checkout__input">
-                                        <p>Email<span>*</span></p>
-                                        <input type="text">
+                                        <label for="order_telephone">Telephone<span>*</span></label>
+                                        <input class="form-control" type="text" name="order_telephone" id="order_telephone">
                                     </div>
                                 </div>
                             </div>
-                            <div class="checkout__input__checkbox">
-                                <label for="acc">
-                                    Create an account?
-                                    <input type="checkbox" id="acc">
-                                    <span class="checkmark"></span>
-                                </label>
-                                <p>Create an account by entering the information below. If you are a returning customer
-                                please login at the top of the page</p>
+                            <div class="row">
+                                <div class="col-lg-6">
+                                    <div class="checkout__input">
+                                        <label for="order_company">Company<span>*</span></label>
+                                        <input class="form-control" type="text" name="order_company" id="order_company">
+                                    </div>
+                                </div>
+                                <div class="col-lg-6">
+                                    <div class="checkout__input">
+                                        <label for="order_address">Address<span>*</span></label>
+                                        <input class="form-control" type="text" name="order_address" id="order_address">
+                                    </div>
+                                </div>
                             </div>
-                            <div class="checkout__input">
-                                <p>Account Password<span>*</span></p>
-                                <input type="text">
+                            <div class="row">
+                                <div class="col-lg-6">
+                                    <div class="checkout__input">
+                                        <label for="order_city">City<span>*</span></label>
+                                        <input class="form-control" type="text" name="order_city" id="order_city">
+                                    </div>
+                                </div>
+                                <div class="col-lg-6">
+                                    <div class="checkout__input">
+                                        <label for="order_country_id">Country<span>*</span></label>
+                                        <select class="form-control" id="order_country_id" name="order_country_id">
+                                            <?php
+
+                                                foreach($countries as $key => $country){
+
+                                            ?>
+                                                    <option value=<?=$country["country_id"]?> <?=$key == 0 ? "selected" : "" ?> ><?=$country["name"] ?></option>
+                                                
+                                            <?php
+                                            
+                                                }
+
+                                            ?>
+                                        </select>
+                                    </div>
+                                </div>
                             </div>
-                            <div class="checkout__input__checkbox">
-                                <label for="diff-acc">
-                                    Note about your order, e.g, special noe for delivery
-                                    <input type="checkbox" id="diff-acc">
-                                    <span class="checkmark"></span>
-                                </label>
-                            </div>
-                            <div class="checkout__input">
-                                <p>Order notes<span>*</span></p>
-                                <input type="text"
-                                placeholder="Notes about your order, e.g. special notes for delivery.">
+                            <div class="form-group">
+                                <div class="input-checkbox">
+                                    <input type="checkbox" id="order_create_account" name="order_create_account"/>
+                                    <label for="order_create_account">
+                                        Create Account?
+                                    </label>
+                                    <div class="caption">
+                                        <p>Please Enter Your Password:</p>
+                                        <div class="input-group mb-3">
+                                            <input type="password" name="order_password" class="form-control" placeholder="Password" aria-label="Password" aria-describedby="basic-addon2" />
+                                            <div class="input-group-append">
+                                                <button class="btn btn-outline-danger" type="button"><i class="fas fa-eye"></i></button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                         <div class="col-lg-4 col-md-6">
@@ -116,7 +141,7 @@
                                     <li>Subtotal <span>$750.99</span></li>
                                     <li>Total <span>$750.99</span></li>
                                 </ul>
-                                <div class="checkout__input__checkbox">
+                                <!-- <div class="checkout__input__checkbox">
                                     <label for="acc-or">
                                         Create an account?
                                         <input type="checkbox" id="acc-or">
@@ -124,22 +149,60 @@
                                     </label>
                                 </div>
                                 <p>Lorem ipsum dolor sit amet, consectetur adip elit, sed do eiusmod tempor incididunt
-                                ut labore et dolore magna aliqua.</p>
-                                <div class="checkout__input__checkbox">
-                                    <label for="payment">
-                                        Check Payment
-                                        <input type="checkbox" id="payment">
-                                        <span class="checkmark"></span>
-                                    </label>
+                                ut labore et dolore magna aliqua.</p> -->
+                                <div class="payment-method">
+                                    <h4 class="title my-3">Payment Method</h4>
+                                    <?php
+
+                                        foreach($payments as $key => $payment){
+
+                                    ?>
+                                        <div class="input-radio mt-2">
+                                            <input type="radio" class="order-payment" name="order_payment_id" id="payment-<?=$payment['payment_id']?>" value="<?=$payment['payment_id']?>" defaultChecked="<?=$key == 0?>"/>
+                                            <label htmlFor="payment-<?=$payment['payment_id']?>" for="payment-<?=$payment['payment_id']?>">
+                                                <?=$payment['name']?>
+                                            </label>
+                                            <div class="caption">
+                                                <p>
+                                                    <?=$payment['description']?>
+                                                </p>
+                                            </div>
+                                        </div>
+                                    <?php
+                                    
+                                        }
+                                    ?>
                                 </div>
-                                <div class="checkout__input__checkbox">
-                                    <label for="paypal">
-                                        Paypal
-                                        <input type="checkbox" id="paypal">
-                                        <span class="checkmark"></span>
-                                    </label>
+                                <div class="shipping-method">
+                                    <h4 class="title my-3">Shipping Method</h4>
+                                    <?php
+
+                                        foreach($shippings as $key => $shipping){
+
+                                    ?>
+                                        <div class="input-radio mt-2">
+                                            <input type="radio" class="order-shipping" name="order_shipping_id" id="shipping-<?=$shipping['shipping_id']?>" value="<?=$shipping['shipping_id']?>" defaultChecked="<?=$key == 0?>"/>
+                                            <label htmlFor="shipping-<?=$shipping['shipping_id']?>" for="shipping-<?=$shipping['shipping_id']?>">
+                                                <?=$shipping['name']?>
+                                            </label>
+                                            <div class="caption">
+                                                <p>
+                                                    <?=$shipping['description']?>
+                                                </p>
+                                            </div>
+                                        </div>
+                                    <?php
+                                    
+                                        }
+                                    ?>
                                 </div>
-                                <button type="submit" class="site-btn">PLACE ORDER</button>
+                                </div>
+                                <div class="order-products">
+                                    <input type="hidden" id="order_products" name="order_products" class="form-control" />
+                                </div>
+                                <div class="d-flex">
+                                    <button type="submit" class="site-btn w-100">PLACE ORDER</button>
+                                </div>
                             </div>
                         </div>
                     </div>

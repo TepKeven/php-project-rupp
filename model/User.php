@@ -19,6 +19,21 @@ class User implements Model {
         return $stmt;
     } 
 
+    public static function findLimit($limit = 4){
+        
+        global $conn;
+
+        $sql = "SELECT * FROM users LIMIT :limit";
+
+        $stmt = $conn->prepare($sql);
+
+        $stmt->bindValue(":limit", (int) $limit, PDO::PARAM_INT);
+
+        $stmt->execute();
+
+        return $stmt;
+    }
+
     public static function findOne($user_id){
 
         global $conn;
@@ -29,6 +44,23 @@ class User implements Model {
         
         $stmt->execute([
             "user_id" => $user_id
+        ]);
+
+        $result = $stmt->fetch(PDO::FETCH_ASSOC);
+        
+        return $result;
+    }
+
+    public static function findByEmail($user_email){
+
+        global $conn;
+
+        $sql = "SELECT * FROM users WHERE email = :email";
+
+        $stmt = $conn->prepare($sql);
+        
+        $stmt->execute([
+            "email" => $user_email
         ]);
 
         $result = $stmt->fetch(PDO::FETCH_ASSOC);

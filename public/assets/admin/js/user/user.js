@@ -38,3 +38,21 @@ function deleteUsers(){
     })
 
 }
+
+function userLogout(){
+
+    $.ajax({
+        url: "api/admin/logout",
+        type: "POST",
+        data: {
+            "user_logout": true
+        },
+        success: function (response, status, xhr) {
+          window.location.assign("/admin/login")
+        },
+        error: function (jqXhr, textStatus, errorMessage) {
+          console.log(errorMessage);
+        },
+    });
+
+}

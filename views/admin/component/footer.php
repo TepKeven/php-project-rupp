@@ -26,6 +26,7 @@
 <script src="/public/assets/admin/js/user/user.js"></script>
 <script src="/public/assets/admin/js/information/information.js"></script>
 <script src="/public/assets/admin/js/newsletter/newsletter.js"></script>
+<script src="/public/assets/admin/js/slideshow/slideshow.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote.min.js"></script>
 
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.7.3/dist/sweetalert2.all.min.js"></script>

@@ -26,9 +26,6 @@
                 case "/contact":
                     $file_path = "./views/front/layout/contact.php";
                     break;
-                case "/main":
-                    $file_path = "./views/front/layout/main.php";
-                    break;
                 case "/shop-details":
                     $file_path = "./views/front/layout/shop-details.php";
                     break;
@@ -36,9 +33,15 @@
                     $file_path = "./views/front/layout/shop.php";
                     break;
                 case "/cart":
-                    $file_path = "./views/front/layout/about.php";
+                    $file_path = "./views/front/layout/cart.php";
                     break;
-
+                case "/login":
+                    $file_path = "./views/front/layout/login.php";
+                    break;
+                case "/register":
+                    $file_path = "./views/front/layout/register.php";
+                    break;
+                    
                 ### Admin Path
                 case "/admin/dashboard":
                     $file_path = "./views/admin/layout/dashboard.php";
@@ -116,12 +119,22 @@
                     $file_path = "./views/admin/layout/auth/login.php";
                     break;
 
+
+                ### Client API
+                case strpos($relative_path, "/api/product") !== false:
+                    $file_path = "./views/front/api/product/product.php";
+                    break;    
+                    
+
                 ### Admin API
                 case strpos($relative_path, "/api/admin/orderproduct") !== false:
                     $file_path = "./views/admin/api/order/orderProduct.php";
                     break;
                 case strpos($relative_path, "/api/admin/dashboard") !== false:
                     $file_path = "./views/admin/api/dashboard/dashboard.php";
+                    break;
+                case strpos($relative_path, "/api/admin/logout") !== false:
+                    $file_path = "./views/admin/api/auth/logout.php";
                     break;
 
                 ### Default Admin 404 Page 
