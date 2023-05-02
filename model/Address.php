@@ -83,6 +83,37 @@ class Address implements Model {
         return $result;
     }
 
+    public static function createFromOrder(){
+
+        global $conn;
+
+        $customer_first_name = $_POST["order_first_name"];
+        $customer_last_name = $_POST["order_last_name"];
+        $customer_company = $_POST["order_company"];
+        $customer_address = $_POST["order_address"];
+        $customer_city = $_POST["order_city"];
+        $customer_postcode = "11100";
+        $customer_country_id = intval($_POST["order_country_id"]);
+
+        $data = [
+            "customer_id" => $conn->lastInsertId(),
+            "first_name" => $customer_first_name,
+            "last_name" => $customer_last_name,
+            "company" => $customer_company,
+            "address" => $customer_address,
+            "city" => $customer_city,
+            "postcode" => $customer_postcode,
+            "country_id" => $customer_country_id
+        ];
+
+        
+        $sql = "INSERT INTO address(customer_id,first_name,last_name,company,address,city,postcode,country_id) VALUES(:customer_id,:first_name,:last_name,:company,:address,:city,:postcode,:country_id)";
+        $stmt = $conn->prepare($sql);
+        $result = $stmt->execute($data);
+       
+        return $result;
+    }
+
     public static function update(){
 
         global $conn;

@@ -46,6 +46,36 @@ class Product implements Model {
         return $result;
     }
 
+    public static function findLimit($limit){
+
+        global $conn;
+
+        $sql = "SELECT * FROM products ORDER BY createdAt DESC LIMIT :product_num";
+
+        $stmt = $conn->prepare($sql);
+
+        $stmt->bindValue(":product_num", (int) $limit, PDO::PARAM_INT);
+
+        $stmt->execute();
+        
+        return $stmt;
+    }
+
+    public static function findByCategoryID($category_id){
+
+        global $conn;
+
+        $sql = "SELECT * FROM products WHERE category_id = :category_id LIMIT 4";
+
+        $stmt = $conn->prepare($sql);
+
+        $stmt->execute([
+            "category_id" => $category_id
+        ]);
+        
+        return $stmt;
+    }
+
     public static function findOne($product_id){
 
         global $conn;
@@ -58,6 +88,17 @@ class Product implements Model {
         ]);
 
         $result = $stmt->fetch(PDO::FETCH_ASSOC);
+
+        $tax_item = TaxClass::findOne($result["tax_class_id"]);
+
+        if($tax_item["type"] == "P"){
+            $tax_price = floatval($result["price"]) * floatval($tax_item["rate"]) / 100;
+        }
+        else{
+            $tax_price = floatval($tax_item["rate"]);
+        }
+
+        $result["tax_price"] = $tax_price;
         
         return $result;
     }

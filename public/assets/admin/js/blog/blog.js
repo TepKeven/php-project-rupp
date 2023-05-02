@@ -1,27 +1,28 @@
+
 $(document).ready(function() {
-    $('#information_description').summernote({
-        placeholder: 'Information Description',
+    $('#blog_description').summernote({
+        placeholder: 'Blog Description',
         tabsize: 2,
         height: 350
     });
   });
 
 
-  function deleteInformations(){
+  function deleteBlogs(){
 
-    var information_delete_ids = [];
-    var information_checkboxes = document.getElementsByClassName("table-checkbox");
+    var blog_delete_ids = [];
+    var blog_checkboxes = document.getElementsByClassName("table-checkbox");
 
-    for(let information_checkbox of information_checkboxes){
+    for(let blog_checkbox of blog_checkboxes){
 
-        if(information_checkbox.checked == true){
+        if(blog_checkbox.checked == true){
 
-            information_delete_ids.push(information_checkbox.value)
+            blog_delete_ids.push(blog_checkbox.value)
         }
     }
 
     Swal.fire({
-        title: 'Do you want to delete these information pages?',
+        title: 'Do you want to delete these blog pages?',
         // text: 'Do you want to continue',
         icon: 'info',
         showDenyButton: false,
@@ -34,10 +35,10 @@ $(document).ready(function() {
             $.ajax({
                 type: "POST",
                 data: {
-                    "deleted_information_ids": JSON.stringify(information_delete_ids)
+                    "deleted_blog_ids": JSON.stringify(blog_delete_ids)
                 },
                 success: function (response, status, xhr) {
-                  window.location.assign("/admin/information")
+                  window.location.assign("/admin/blog")
                 },
                 error: function (jqXhr, textStatus, errorMessage) {
                   console.log(errorMessage);

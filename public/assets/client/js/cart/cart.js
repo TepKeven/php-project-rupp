@@ -1,70 +1,64 @@
-var order_products = []
+function addToCart(product_id, quantity = 1){
 
-function addProductToOrder(){
+    var cart_products = JSON.parse(localStorage.getItem("cart_items") === null ? "[]" : localStorage.getItem("cart_items"));
 
-    var order_product_id = document.getElementById("order_product_id").value
-    var order_product_quantity = document.getElementById("order_product_quantity").value ;
+    if(cart_products.find(cart_product => cart_product.product_id == product_id)){
 
-    if(order_products.find(order_product => order_product.product_id == order_product_id)){
+        cart_products.map(cart_product => {
 
-       order_products.map(order_product => {
-            if(order_product.product_id == order_product_id){
-                order_product.quantity += isNaN(parseInt(order_product_quantity)) ? 0 : parseInt(order_product_quantity)
+            if(cart_product.product_id == product_id){
+                cart_product.quantity += isNaN(parseInt(quantity)) ? 0 : parseInt(quantity)
             }
        })
     }
 
     else{
 
-        order_products.push({
-            product_id: order_product_id,
-            quantity: isNaN(parseInt(order_product_quantity)) ? 0 : parseInt(order_product_quantity)
+        cart_products.push({
+            product_id: product_id,
+            quantity: isNaN(parseInt(quantity)) ? 0 : parseInt(quantity)
         })
     }
 
-    var order_product_table = "";
+    localStorage.setItem("cart_items", JSON.stringify(cart_products));
 
-    var product_ids = order_products.map(order_product => {
-        return order_product.product_id
-    })
-
-    $.ajax({
-        url: "api/admin/orderproduct",
-        type: "POST",
-        data: {
-            "order_product_ids": JSON.stringify(product_ids)
-        },
-        success: function (response, status, xhr) {
-
-            var products = JSON.parse(response)
-
-            for(let product of products){
-
-                var order_product = order_products.find(order_product => order_product.product_id == product.product_id)
-
-                order_product_table += `<tr>
-                    <td class="text-center align-middle">${product.name}</td>
-                    <td class="text-center align-middle">${product.model}</td>
-                    <td class="text-center align-middle">${order_product.quantity}</td>
-                    <td class="text-center align-middle">${product.price}</td>
-                    <td class="text-center align-middle">${(parseFloat(product.price) + parseFloat(product.tax_price)) * parseInt(order_product.quantity)}</td>
-                    <td class="text-center align-middle">
-                        <button type="button" title="Delete" class="btn-order-product btn btn-danger" onclick="removeProductFromOrder(event,${product.product_id})"><i class="ti-trash"></i></button>
-                    </td>
-                </tr>`
-            }
-        
-            document.querySelector("#tab-products tbody").innerHTML = order_product_table;
-            document.getElementById("order_product_items").value = JSON.stringify(order_products)
-
-        },
-        error: function (jqXhr, textStatus, errorMessage) {
-          console.log(errorMessage);
-        },
+    Swal.fire({
+        title: 'Add to Cart Successfully',
+        icon: 'info'
     });
 
-    
+}
 
+function addToCartQuantity(product_id){
+
+    var cart_products = JSON.parse(localStorage.getItem("cart_items") === null ? "[]" : localStorage.getItem("cart_items"));
+    var product_quantity = document.getElementById("product-quantity").value;
+
+    if(cart_products.find(cart_product => cart_product.product_id == product_id)){
+
+        cart_products.map(cart_product => {
+
+            if(cart_product.product_id == product_id){
+                cart_product.quantity += isNaN(parseInt(product_quantity)) ? 0 : parseInt(product_quantity)
+            }
+       })
+
+    }
+
+    else{
+
+        cart_products.push({
+            product_id: product_id,
+            quantity: isNaN(parseInt(product_quantity)) ? 0 : parseInt(product_quantity)
+        })
+    }
+
+    localStorage.setItem("cart_items", JSON.stringify(cart_products));
+
+    Swal.fire({
+        title: 'Add to Cart Successfully',
+        icon: 'info'
+    });
 }
 
 function getCartItems(){
@@ -73,7 +67,7 @@ function getCartItems(){
     var subtotal_price = 0;
     var total_price_tax = 0;
 
-    var cart_products = JSON.parse(localStorage.getItem("cart_items"));
+    var cart_products = JSON.parse(localStorage.getItem("cart_items") === null ? "[]" : localStorage.getItem("cart_items"));
 
     var cart_product_ids = cart_products.map(cart_product => {
         return cart_product.product_id;
@@ -129,7 +123,18 @@ function getCartItems(){
     });
 }
 
-function removeFromCart(event,product_id){
+function removeFromCart(event, product_id){
+
+    var cart_products = JSON.parse(localStorage.getItem("cart_items") === null ? "[]" : localStorage.getItem("cart_items"));
+
+    cart_products = cart_products.filter(cart_product => {
+
+        return cart_product.product_id != product_id;
+    })
+
+    localStorage.setItem("cart_items", JSON.stringify(cart_products))
+
+    getCartItems();
 
     // Remove from cart
     // list cart in checkout
@@ -137,42 +142,3 @@ function removeFromCart(event,product_id){
 
 }
 
-function deleteOrders(){
-
-    var order_delete_ids = [];
-    var order_checkboxes = document.getElementsByClassName("table-checkbox");
-
-    for(let order_checkbox of order_checkboxes){
-
-        if(order_checkbox.checked == true){
-
-            order_delete_ids.push(order_checkbox.value)
-        }
-    }
-
-    Swal.fire({
-        title: 'Do you want to delete these categories?',
-        // text: 'Do you want to continue',
-        icon: 'info',
-        showDenyButton: false,
-        showCancelButton: true,
-        confirmButtonText: 'Yes',
-    }).then((result) => {
-        
-        if (result.isConfirmed) {
-
-            $.ajax({
-                type: "POST",
-                data: {
-                    "deleted_order_ids": JSON.stringify(order_delete_ids)
-                },
-                success: function (response, status, xhr) {
-                  window.location.assign("/admin/order")
-                },
-                error: function (jqXhr, textStatus, errorMessage) {
-                  console.log(errorMessage);
-                },
-            });
-        } 
-    })
-}

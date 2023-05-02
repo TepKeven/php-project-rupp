@@ -5,10 +5,10 @@
                 <div class="col-lg-3 col-md-6 col-sm-6">
                     <div class="footer__about">
                         <div class="footer__logo">
-                            <a href="#"><img src="img/footer-logo.png" alt=""></a>
+                            <a href="#"><img src="/public/assets/client/img/footer-logo.png" alt=""></a>
                         </div>
                         <p>The customer is at the heart of our unique business model, which includes design.</p>
-                        <a href="#"><img src="img/payment.png" alt=""></a>
+                        <a href="#"><img src="/public/assets/client/img/payment.png" alt=""></a>
                     </div>
                 </div>
                 <div class="col-lg-2 offset-lg-1 col-md-3 col-sm-6">
@@ -85,11 +85,12 @@
     <script src="/public/assets/client/js/jquery.magnific-popup.min.js"></script>
     <script src="/public/assets/client/js/jquery.countdown.min.js"></script>
     <script src="/public/assets/client/js/jquery.slicknav.js"></script>
-    <script src="/public/assets/client/js/mixiztup.min.js"></script>
+    <script src="/public/assets/client/js/mixitup.min.js"></script>
     <script src="/public/assets/client/js/owl.carousel.min.js"></script>
     <script src="/public/assets/client/js/main.js"></script>
     <script src="/public/assets/client/js/base.js"></script>
     <script src="/public/assets/client/js/cart/cart.js"></script>
+    <script src="/public/assets/client/js/checkout/checkout.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.7.3/dist/sweetalert2.all.min.js"></script>
 </body>
 

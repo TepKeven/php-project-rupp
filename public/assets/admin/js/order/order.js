@@ -142,7 +142,7 @@ function deleteOrders(){
     }
 
     Swal.fire({
-        title: 'Do you want to delete these categories?',
+        title: 'Do you want to delete these orders?',
         // text: 'Do you want to continue',
         icon: 'info',
         showDenyButton: false,

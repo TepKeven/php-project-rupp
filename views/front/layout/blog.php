@@ -1,4 +1,12 @@
- <!-- Breadcrumb Section Begin -->
+<?php
+
+    require_once("./model/Blog.php");
+
+    $blogs = Blog::findAll();    
+
+?>
+
+<!-- Breadcrumb Section Begin -->
  <section class="breadcrumb-blog set-bg" data-setbg="public/assets/client/img/breadcrumb-bg.jpg">
         <div class="container">
             <div class="row">
@@ -14,7 +22,7 @@
     <section class="blog spad">
         <div class="container">
             <div class="row">
-                <div class="col-lg-4 col-md-6 col-sm-6">
+                <!-- <div class="col-lg-4 col-md-6 col-sm-6">
                     <div class="blog__item">
                         <div class="blog__item__pic set-bg" data-setbg="public/assets/client/img/blog/blog-1.jpg"></div>
                         <div class="blog__item__text">
@@ -103,7 +111,34 @@
                             <a href="#">Read More</a>
                         </div>
                     </div>
-                </div>
+                </div> -->
+
+                <?php
+
+                    if ($blogs->rowCount() > 0) {
+
+                        while($blog = $blogs->fetch(PDO::FETCH_ASSOC)) {
+
+                ?>  
+
+                        <div class="col-lg-4 col-md-6 col-sm-6">
+                            <div class="blog__item">
+                                <div class="blog__item__pic set-bg" data-setbg="<?=$blog["image"] == null ? "/public/assets/no_image.png" : "/public/images/blog/" . $blog["image"]?>"></div>
+                                <div class="blog__item__text">
+                                    <span><img src="/public/assets/client/img/icon/calendar.png" alt=""><?=date("F j Y", strtotime($blog["createdAt"]))?></span>
+                                    <h5><?=$blog["name"]?></h5>
+                                    <a href="/post?blog_id=<?=$blog['blog_id']?>">Read More</a>
+                                </div>
+                            </div>
+                        </div>
+                <?php
+
+                        }
+
+                    }
+                
+                ?>
+
             </div>
         </div>
     </section>

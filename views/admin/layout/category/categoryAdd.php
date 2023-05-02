@@ -74,6 +74,9 @@
                                 <label for="category_parent_id" class="col-sm-3 col-form-label">Parent Category</label>
                                 <div class="col-sm-9">
                                     <select class="form-control" id="category_parent_id" name="category_parent_id">
+                                        
+                                        <option value="0" selected>Please Choose</option>    
+
                                         <?php
 
                                             foreach($categories as $key => $category){

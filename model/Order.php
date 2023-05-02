@@ -3,6 +3,7 @@
 // The File Path is looked at from the index.php file
 require_once("./model/Model.php");
 require_once("./model/Country.php");
+require_once("./model/Customer.php");
 require_once("./model/Product.php");
 require_once("./model/OrderProduct.php");
 require("./conn.php");
@@ -63,7 +64,7 @@ class Order implements Model {
 
             $order_product = Product::findOne($order_product_item["product_id"]);
 
-            $order_total += floatval($order_product["price"]);
+            $order_total += floatval(($order_product["price"] + $order_product["tax_price"]) * intval($order_product_item["quantity"]));
         }
 
         $data = [
@@ -95,6 +96,78 @@ class Order implements Model {
             $order_product_result = OrderProduct::createManyByIds($order_id, $order_product_items);
             return $order_product_result;
 
+        }
+
+        return $result;
+
+    }
+
+    public static function createCustomerOrder(){
+
+        global $conn;
+
+        $session_token = isset($_SESSION["customer_login_token"]) ? $_SESSION["customer_login_token"] : "";
+
+        $order_customer_id = isset($_SESSION["customer_login_token"]) ? json_decode(Session::findByToken($session_token)["data"])["customer_id"] : NULL;
+        $order_first_name = $_POST["order_first_name"];
+        $order_last_name = $_POST["order_last_name"];
+        $order_email = $_POST["order_email"];
+        $order_telephone = $_POST["order_telephone"];
+        $order_company = $_POST["order_company"];
+        $order_address = $_POST["order_address"];
+        $order_city = $_POST["order_city"];
+        $order_country = Country::findOne($_POST["order_country_id"])["name"];
+        $order_country_id = $_POST["order_country_id"];
+        $order_payment_id = $_POST["order_payment_id"];
+        $order_shipping_id = $_POST["order_shipping_id"];
+        $order_total = 0;
+        $order_order_status_id = 1;
+        $order_ip = $_SERVER['REMOTE_ADDR']; 
+        $order_create_account = isset($_POST['order_create_account']); 
+
+        $order_product_items = json_decode($_POST["order_products"], true);
+
+        foreach($order_product_items as $order_product_item){
+
+            $order_product = Product::findOne($order_product_item["product_id"]);
+
+            $order_total += floatval(($order_product["price"] + $order_product["tax_price"]) * intval($order_product_item["quantity"]));
+        }
+
+        $data = [
+            "customer_id" => $order_customer_id,
+            "first_name" => $order_first_name,
+            "last_name" => $order_last_name,
+            "email" => $order_email,
+            "telephone" => $order_telephone,
+            "company" => $order_company,
+            "address" => $order_address,
+            "city" =>  $order_city,
+            "country" => $order_country,
+            "country_id" => $order_country_id,
+            "payment_id" => $order_payment_id,
+            "shipping_id" => $order_shipping_id,
+            "total" => $order_total,
+            "order_status_id" => $order_order_status_id,
+            "ip" => $order_ip
+        ];
+
+        $sql = "INSERT INTO orders(customer_id,first_name,last_name,email,telephone,company,address,city,country,country_id,payment_id,shipping_id,total,order_status_id,ip) VALUES(:customer_id,:first_name,:last_name,:email,:telephone,:company,:address,:city,:country,:country_id,:payment_id,:shipping_id,:total,:order_status_id,:ip)";
+                
+        $stmt = $conn->prepare($sql);
+        $result = $stmt->execute($data); // true or false
+        
+        if($result){
+
+            $order_id = $conn->lastInsertId();
+            $order_product_result = OrderProduct::createManyByIds($order_id, $order_product_items);
+            // return $order_product_result;
+
+        }
+
+        if($order_create_account){
+
+            $result = Customer::createFromOrder();
         }
 
         return $result;

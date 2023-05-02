@@ -1,15 +1,27 @@
+<?php
 
+    require_once("./model/Blog.php");
+    require_once("./model/User.php");
+
+    $blog_id = $_GET["blog_id"];
+
+    $post = Blog::findOne($blog_id);    
+    $prev_post = Blog::previous($blog_id);
+    $next_post = Blog::next($blog_id);
+    $user = User::findAll()->fetch(PDO::FETCH_ASSOC);
+
+?>
     <!-- Blog Details Hero Begin -->
     <section class="blog-hero spad">
         <div class="container">
             <div class="row d-flex justify-content-center">
                 <div class="col-lg-9 text-center">
                     <div class="blog__hero__text">
-                        <h2>Are you one of the thousands of Iphone owners who has no idea</h2>
+                        <h2><?=$post["name"]?></h2>
                         <ul>
-                            <li>By Deercreative</li>
-                            <li>February 21, 2019</li>
-                            <li>8 Comments</li>
+                            <li>By Group 6</li>
+                            <li><?=date("F j Y", strtotime($post["createdAt"]))?></li>
+                            <li><?=$post["meta_title"]?></li>
                         </ul>
                     </div>
                 </div>
@@ -24,12 +36,12 @@
             <div class="row d-flex justify-content-center">
                 <div class="col-lg-12">
                     <div class="blog__details__pic">
-                        <img src="/public/assets/client/img/blog/details/blog-details.jpg" alt="">
+                        <img src="<?=$post["image"] == null ? "/public/assets/no_image.png" : "/public/images/blog/" . $post["image"]?>" alt="">
                     </div>
                 </div>
                 <div class="col-lg-8">
                     <div class="blog__details__content">
-                        <div class="blog__details__share">
+                        <!-- <div class="blog__details__share">
                             <span>share</span>
                             <ul>
                                 <li><a href="#"><i class="fa fa-facebook"></i></a></li>
@@ -37,25 +49,17 @@
                                 <li><a href="#" class="youtube"><i class="fa fa-youtube-play"></i></a></li>
                                 <li><a href="#" class="linkedin"><i class="fa fa-linkedin"></i></a></li>
                             </ul>
-                        </div>
+                        </div> -->
                         <div class="blog__details__text">
-                            <p>Hydroderm is the highly desired anti-aging cream on the block. This serum restricts the
-                                occurrence of early aging sings on the skin and keeps the skin younger, tighter and
-                                healthier. It reduces the wrinkles and loosening of skin. This cream nourishes the skin
-                                and brings back the glow that had lost in the run of hectic years.</p>
-                            <p>The most essential ingredient that makes hydroderm so effective is Vyo-Serum, which is a
-                                product of natural selected proteins. This concentrate works actively in bringing about
-                                the natural youthful glow of the skin. It tightens the skin along with its moisturizing
-                                effect on the skin. The other important ingredient, making hydroderm so effective is
-                                “marine collagen” which along with Vyo-Serum helps revitalize the skin.</p>
+                            <?=html_entity_decode($post["description"])?>
                         </div>
-                        <div class="blog__details__quote">
+                        <!-- <div class="blog__details__quote">
                             <i class="fa fa-quote-left"></i>
                             <p>“When designing an advertisement for a particular product many things should be
                                 researched like where it should be displayed.”</p>
                             <h6>_ John Smith _</h6>
-                        </div>
-                        <div class="blog__details__text">
+                        </div> -->
+                        <!-- <div class="blog__details__text">
                             <p>Vyo-Serum along with tightening the skin also reduces the fine lines indicating aging of
                                 skin. Problems like dark circles, puffiness, and crow’s feet can be control from the
                                 strong effects of this serum.</p>
@@ -63,16 +67,16 @@
                                 the body a toned shape, also helps in cleansing the skin from the root and not letting
                                 the pores clog, nevertheless also let’s sweeps out the wrinkles and all signs of aging
                                 from the sensitive near the eyes.</p>
-                        </div>
+                        </div> -->
                         <div class="blog__details__option">
                             <div class="row">
                                 <div class="col-lg-6 col-md-6 col-sm-6">
                                     <div class="blog__details__author">
                                         <div class="blog__details__author__pic">
-                                            <img src="/public/assets/client/img/blog/details/blog-author.jpg" alt="">
+                                            <img src="<?=$user["image"] == null ? "/public/assets/no_image.png" : "/public/images/user/" . $user["image"]?>" alt="">
                                         </div>
                                         <div class="blog__details__author__text">
-                                            <h5>Aiden Blair</h5>
+                                            <h5><?=$user["username"]?></h5>
                                         </div>
                                     </div>
                                 </div>
@@ -88,20 +92,45 @@
                         <div class="blog__details__btns">
                             <div class="row">
                                 <div class="col-lg-6 col-md-6 col-sm-6">
-                                    <a href="" class="blog__details__btns__item">
-                                        <p><span class="arrow_left"></span> Previous Pod</p>
-                                        <h5>It S Classified How To Utilize Free Classified Ad Sites</h5>
-                                    </a>
+                                    
+                                    <?php
+                                
+                                        if($prev_post){
+                                
+                                    ?>
+                                
+                                        <a href="/post?blog_id=<?=$prev_post['blog_id']?>" class="blog__details__btns__item">
+                                            <p><span class="arrow_left"></span> Previous Post</p>
+                                            <h5><?=$prev_post["name"]?></h5>
+                                        </a>
+                                    <?php
+                                    
+                                        }
+                                    
+                                    ?>
                                 </div>
+
                                 <div class="col-lg-6 col-md-6 col-sm-6">
-                                    <a href="" class="blog__details__btns__item blog__details__btns__item--next">
-                                        <p>Next Pod <span class="arrow_right"></span></p>
-                                        <h5>Tips For Choosing The Perfect Gloss For Your Lips</h5>
+                                    
+                                    <?php
+                                
+                                        if($next_post){
+                                    
+                                    ?>
+
+                                    <a href="/post?blog_id=<?=$next_post['blog_id']?>" class="blog__details__btns__item blog__details__btns__item--next">
+                                        <p>Next Post <span class="arrow_right"></span></p>
+                                        <h5><?=$next_post["name"]?></h5>
                                     </a>
+
+                                    <?php
+                                
+                                        }
+                                    ?>
                                 </div>
                             </div>
                         </div>
-                        <div class="blog__details__comment">
+                        <!-- <div class="blog__details__comment">
                             <h4>Leave A Comment</h4>
                             <form action="#">
                                 <div class="row">
@@ -120,7 +149,7 @@
                                     </div>
                                 </div>
                             </form>
-                        </div>
+                        </div> -->
                     </div>
                 </div>
             </div>

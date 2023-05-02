@@ -18,6 +18,21 @@ class Category implements Model {
         return $stmt;
     } 
 
+    public static function findLimit($category_num = 2) {
+
+        global $conn;
+
+        $sql = "SELECT * FROM category LIMIT :category_num";
+
+        $stmt = $conn->prepare($sql);
+
+        $stmt->bindValue(":category_num", (int) $category_num, PDO::PARAM_INT);
+
+        $stmt->execute();
+
+        return $stmt;
+    } 
+
     public static function findOne($category_id){
 
         global $conn;
@@ -173,6 +188,22 @@ class Category implements Model {
         }
 
         return !in_array(false, $success);
+    }
+
+    public static function countProductsInCategory($category_id){
+
+        global $conn;
+
+        $sql = "SELECT COUNT(*) AS total_product FROM products WHERE category_id = :category_id";
+
+        $stmt = $conn->prepare($sql);
+        $stmt->execute([
+            "category_id" => $category_id
+        ]);
+
+        $result = $stmt->fetch(PDO::FETCH_ASSOC);
+
+        return $result["total_product"];
     }
 
   }

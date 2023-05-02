@@ -1,7 +1,15 @@
 <?php
 
-require_once("./model/Product.php");
-$stmt = Product::findAll();
+    require_once("./model/Product.php");
+    require_once("./model/Category.php");
+    require_once("./model/Manufacturer.php");
+
+    $products = Product::findAll();
+    $categories = Category::findAll();
+    $manufacturers = Manufacturer::findAll();
+    $recent_products = Product::findLimit(3);
+
+
 
 ?>
 
@@ -47,15 +55,18 @@ $stmt = Product::findAll();
                                         <div class="card-body">
                                             <div class="shop__sidebar__categories">
                                                 <ul class="nice-scroll">
-                                                    <li><a href="#">Men (20)</a></li>
-                                                    <li><a href="#">Women (20)</a></li>
-                                                    <li><a href="#">Bags (20)</a></li>
-                                                    <li><a href="#">Clothing (20)</a></li>
-                                                    <li><a href="#">Shoes (20)</a></li>
-                                                    <li><a href="#">Accessories (20)</a></li>
-                                                    <li><a href="#">Kids (20)</a></li>
-                                                    <li><a href="#">Kids (20)</a></li>
-                                                    <li><a href="#">Kids (20)</a></li>
+                                                    <?php
+
+                                                        foreach($categories as $key => $category){
+
+                                                        ?>
+                                                            <li><a href="#"><?=$category["name"]?> (<?=Category::countProductsInCategory($category["category_id"])?>)</a></li>
+                                                            
+                                                        <?php
+
+                                                        }
+
+                                                    ?>
                                                 </ul>
                                             </div>
                                         </div>
@@ -69,10 +80,18 @@ $stmt = Product::findAll();
                                         <div class="card-body">
                                             <div class="shop__sidebar__brand">
                                                 <ul>
-                                                    <li><a href="#">Louis Vuitton</a></li>
-                                                    <li><a href="#">Chanel</a></li>
-                                                    <li><a href="#">Hermes</a></li>
-                                                    <li><a href="#">Gucci</a></li>
+                                                    <?php
+
+                                                        foreach($manufacturers as $key => $manufacturer){
+
+                                                        ?>
+                                                            <li><a href="#"><?=$manufacturer["name"]?></a></li>
+                                                            
+                                                        <?php
+
+                                                        }
+
+                                                    ?>
                                                 </ul>
                                             </div>
                                         </div>
@@ -80,24 +99,36 @@ $stmt = Product::findAll();
                                 </div>
                                 <div class="card">
                                     <div class="card-heading">
-                                        <a data-toggle="collapse" data-target="#collapseThree">Filter Price</a>
+                                        <a data-toggle="collapse" data-target="#collapseThree">Recent Product</a>
                                     </div>
                                     <div id="collapseThree" class="collapse show" data-parent="#accordionExample">
                                         <div class="card-body">
                                             <div class="shop__sidebar__price">
                                                 <ul>
-                                                    <li><a href="#">$0.00 - $50.00</a></li>
-                                                    <li><a href="#">$50.00 - $100.00</a></li>
-                                                    <li><a href="#">$100.00 - $150.00</a></li>
-                                                    <li><a href="#">$150.00 - $200.00</a></li>
-                                                    <li><a href="#">$200.00 - $250.00</a></li>
-                                                    <li><a href="#">250.00+</a></li>
+                                                    <?php
+
+                                                        foreach($recent_products as $key => $recent_product){
+
+                                                        ?>
+                                                            <div class="d-flex align-items-center justify-content-around mt-4">
+                                                                <img src="<?=$recent_product["image"] == null ? "/public/assets/no_image.png" : "/public/images/product/" . $recent_product["image"]?>" width="100" height="100" />
+                                                                <div class="caption">
+                                                                    <h6><?=$recent_product["name"]?></h6>
+                                                                    <p>$<?=$recent_product["price"]?></p>
+                                                                </div>
+                                                            </div>
+                                                            
+                                                        <?php
+
+                                                        }
+
+                                                    ?>
                                                 </ul>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
-                                <div class="card">
+                                <!-- <div class="card">
                                     <div class="card-heading">
                                         <a data-toggle="collapse" data-target="#collapseFour">Size</a>
                                     </div>
@@ -187,7 +218,7 @@ $stmt = Product::findAll();
                                             </div>
                                         </div>
                                     </div>
-                                </div>
+                                </div> -->
                             </div>
                         </div>
                     </div>
@@ -213,26 +244,26 @@ $stmt = Product::findAll();
                         </div>
                     </div>
                     <div class="row">
-        <?php
-        
-        if ($stmt->rowCount() > 0) {
+                    <?php
+                    
+                    if ($products->rowCount() > 0) {
 
-            while($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
+                        while($product = $products->fetch(PDO::FETCH_ASSOC)) {
 
-        ?>  
+                    ?>  
                         <div class="col-lg-4 col-md-6 col-sm-6">
                             <div class="product__item">
-                                <div class="product__item__pic set-bg" data-setbg="<?=  $row["image"] == null ? "/public/assets/no_image.png" : "/public/images/product/" . $row["image"]?>">
+                                <div class="product__item__pic set-bg" data-setbg="<?=  $product["image"] == null ? "/public/assets/no_image.png" : "/public/images/product/" . $product["image"]?>">
                                     <ul class="product__hover">
-                                        <li><a href="#"><img src="/public/assets/client/img/icon/heart.png" alt=""></a></li>
-                                        <li><a href="#"><img src="/public/assets/client/img/icon/compare.png" alt=""> <span>Compare</span></a>
+                                        <li><a href="/product?product_id=<?=$product["product_id"]?>"><img src="/public/assets/client/img/icon/heart.png" alt=""></a></li>
+                                        <li><a href="/product?product_id=<?=$product["product_id"]?>"><img src="/public/assets/client/img/icon/compare.png" alt=""> <span>Compare</span></a>
                                         </li>
-                                        <li><a href="#"><img src="/public/assets/client/img/icon/search.png" alt=""></a></li>
+                                        <li><a href="/product?product_id=<?=$product["product_id"]?>"><img src="/public/assets/client/img/icon/search.png" alt=""></a></li>
                                     </ul>
                                 </div>
                                 <div class="product__item__text">
-                                    <h6>Piqué Biker Jacket</h6>
-                                    <a href="#" class="add-cart">+ Add To Cart</a>
+                                    <h6><?=$product["name"]?></h6>
+                                    <a href="#" class="add-cart" onclick="addToCart(<?=$product['product_id']?>)">+ Add To Cart</a>
                                     <div class="rating">
                                         <i class="fa fa-star-o"></i>
                                         <i class="fa fa-star-o"></i>
@@ -240,7 +271,7 @@ $stmt = Product::findAll();
                                         <i class="fa fa-star-o"></i>
                                         <i class="fa fa-star-o"></i>
                                     </div>
-                                    <h5>$67.24</h5>
+                                    <h5>$<?=$product["price"]?></h5>
                                     <div class="product__color__select">
                                         <label for="pc-4">
                                             <input type="radio" id="pc-4">
@@ -256,12 +287,13 @@ $stmt = Product::findAll();
                             </div>
                            </div>
                         <?php 
-                }   
-        }
+                        
+                        }   
+                    }
                         ?>
                      </div> 
                     </div>
-                    <div class="row">
+                    <!-- <div class="row">
                         <div class="col-lg-12">
                             <div class="product__pagination">
                                 <a class="active" href="#">1</a>
@@ -271,7 +303,7 @@ $stmt = Product::findAll();
                                 <a href="#">21</a>
                             </div>
                         </div>
-                    </div>
+                    </div> -->
                 </div>
             </div>
         </div>

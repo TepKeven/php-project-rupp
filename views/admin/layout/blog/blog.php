@@ -1,16 +1,16 @@
 <?php
 
-  require_once("./model/Information.php");
+  require_once("./model/Blog.php");
 
   if(isset($_POST) && !empty($_POST)){
 
-      $information_ids = json_decode( $_POST["deleted_information_ids"]);
+      $blog_ids = json_decode( $_POST["deleted_blog_ids"]);
 
-      $result = Information::delete($information_ids);
+      $result = Blog::delete($blog_ids);
 
   }
 
-  $stmt = Information::findAll();
+  $stmt = Blog::findAll();
 
 ?>
 
@@ -203,13 +203,13 @@
         <div class="content-wrapper">
           <div class="row">    
             <div class="col-lg-12 grid-margin stretch-card">
-              <div class="card form-information" id="form-information">
+              <div class="card form-blog" id="form-blog">
                 <div class="card-body">
                 <div class="page-heading d-flex align-items-center justify-content-between">
-                  <h3>Information</h3>
+                  <h3>Blogs</h3>
                   <div class="pull-right">
-                    <a href="/admin/information/add" data-toggle="tooltip" title="New" class="btn btn-info" data-original-title="Save"><i class="ti-plus"></i></a>
-                    <a href="#" data-toggle="tooltip" title="Delete" class="btn btn-danger" data-original-title="Delete" onclick="deleteInformations()"><i class="ti-trash"></i></a>
+                    <a href="/admin/blog/add" data-toggle="tooltip" title="New" class="btn btn-info" data-original-title="Save"><i class="ti-plus"></i></a>
+                    <a href="#" data-toggle="tooltip" title="Delete" class="btn btn-danger" data-original-title="Delete" onclick="deleteBlogs()"><i class="ti-trash"></i></a>
                   </div>
                 </div>
                   <div class="table-responsive pt-3">
@@ -220,7 +220,7 @@
                           <th scope="col" class="text-center align-middle">#</th>
                           <th scope="col" class="text-center align-middle">Name</th>
                           <th scope="col" class="text-center align-middle">Description</th>
-                          <th scope="col" class="text-center align-middle">Bottom</th>
+                          <th scope="col" class="text-center align-middle">Top</th>
                           <th scope="col" class="text-center align-middle">Sort Order</th>
                           <th scope="col" class="text-center align-middle">Status</th>
                           <th scope="col" class="text-center align-middle">Actions</th>
@@ -238,15 +238,15 @@
                             $i++;
                       ?>          
                             <tr>
-                                <td scope="col" class="text-center align-middle"><input type="checkbox" class="table-checkbox" name="information_checkbox[]" value=<?=$row["information_id"]?> /></td>
+                                <td scope="col" class="text-center align-middle"><input type="checkbox" class="table-checkbox" name="blog_checkbox[]" value=<?=$row["blog_id"]?> /></td>
                                 <td scope="row" class="text-center align-middle"><?=$i?></td> 
                                 <td class="text-center align-middle"><?=$row["name"] ?></td>
-                                <td class="text-center align-middle"><?=html_entity_decode($row["description"])?></td>
-                                <td class="text-center align-middle"><?=$row["bottom"] ?></td>
+                                <td class="text-center align-middle"><?=substr(strip_tags(html_entity_decode($row["description"])), 0, 30)?></td>
+                                <td class="text-center align-middle"><?=$row["top"] ?></td>
                                 <td class="text-center align-middle"><?=$row["sort_order"] ?></td>
                                 <td class="text-center align-middle"><?=$row["status"]?></td>
                                 <td class="text-center align-middle">
-                                    <a href="/admin/information/edit?page_id=<?=$row["information_id"]?>" title="Edit" class="btn btn-primary p-2"><i class="ti-pencil"></i></a>
+                                    <a href="/admin/blog/edit?blog_id=<?=$row["blog_id"]?>" title="Edit" class="btn btn-primary p-2"><i class="ti-pencil"></i></a>
                                 </td>
                             </tr> 
                       <?php 

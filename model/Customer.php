@@ -143,6 +143,85 @@ class Customer implements Model {
         return $result;
     }
 
+    public static function createFromOrder(){
+
+        global $conn;
+
+        $customer_first_name = $_POST["order_first_name"];
+        $customer_last_name = $_POST["order_last_name"];
+        $customer_email = $_POST["order_email"];
+        $customer_telephone = $_POST["order_telephone"];
+        $customer_image = isset($_FILES["order_image"]) ? $_FILES["order_image"] : "";
+        $customer_password = $_POST["order_password"];
+        $customer_salt = substr(uniqid("",true), -5);
+        $customer_newsletter = 1;
+        $customer_address_id = 0;
+        $customer_ip = $_SERVER['REMOTE_ADDR'];
+        $customer_status = 1;
+
+
+        $data = [
+            "first_name" => $customer_first_name,
+            "last_name" => $customer_last_name,
+            "email" => $customer_email,
+            "telephone" => $customer_telephone,
+            "password" => sha1($customer_password . $customer_salt),
+            "salt" => $customer_salt,
+            "newsletter" => $customer_newsletter,
+            "address_id" => $customer_address_id,
+            "ip" => $customer_ip,
+            "status" => $customer_status
+        ];
+
+        $checkEmailExist = self::findByEmail($customer_email);
+
+        if($checkEmailExist->rowCount() > 0){
+
+            return "Email already exists";
+        }
+
+        $sql = "INSERT INTO customers(first_name,last_name,email,telephone,password,salt,newsletter,address_id,ip,status) VALUES(:first_name,:last_name,:email,:telephone,:password,:salt,:newsletter,:address_id,:ip,:status)";
+        
+        if(isset($_FILES["order_image"]) && !empty($_FILES["order_image"])){
+
+            if(file_exists($_FILES["order_image"]["tmp_name"]) && is_uploaded_file($_FILES["order_image"]["tmp_name"])){
+                
+                $target_dir = "public/images/customer/";
+                $image_extension = strtolower(pathinfo($customer_image["name"], PATHINFO_EXTENSION));
+                $target_file = uniqid("", true) . "." . $image_extension;
+
+                $checkIfImage = getimagesize($customer_image["tmp_name"]);
+
+                if($checkIfImage !== false) {
+
+                    if(in_array($image_extension, ["jpg", "png", "jpeg", "gif"])) {
+                        
+                        move_uploaded_file($customer_image["tmp_name"], $target_dir . $target_file);
+
+                        $data["image"] = $target_file;
+                        $sql = "INSERT INTO customers(first_name,last_name,email,telephone,image,password,salt,newsletter,address_id,ip,status) VALUES(:first_name,:last_name,:email,:telephone,:image,:password,:salt,:newsletter,:address_id,:ip,:status)";
+                    }
+
+                } else {
+                    
+                    return "This is not an image. Please try again.";
+                }
+            }
+
+        }
+        
+        $stmt = $conn->prepare($sql);
+        $result = $stmt->execute($data);
+
+        if($result){
+
+            $result = Address::createFromOrder();
+
+        }
+       
+        return $result;
+    }
+
     public static function update(){
 
         global $conn;

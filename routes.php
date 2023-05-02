@@ -6,41 +6,24 @@
             
             $file_path = "./views/front/layout/home.php";
             switch($relative_path){
-                
-                ### Client Path
-                case "/":
-                    $file_path = "./views/front/layout/home.php";
+
+
+                ### Client API
+                case strpos($relative_path, "/api/product") !== false:
+                    $file_path = "./views/front/api/product/product.php";
+                    break;    
+                    
+
+                ### Admin API
+                case strpos($relative_path, "/api/admin/orderproduct") !== false:
+                    $file_path = "./views/admin/api/order/orderProduct.php";
                     break;
-                case "/about":
-                    $file_path = "./views/front/layout/about.php";
+                case strpos($relative_path, "/api/admin/dashboard") !== false:
+                    $file_path = "./views/admin/api/dashboard/dashboard.php";
                     break;
-                case "/blog-details":
-                    $file_path = "./views/front/layout/blog-details.php";
-                    break;
-                case "/blog":
-                    $file_path = "./views/front/layout/blog.php";
-                    break;
-                case "/checkout":
-                    $file_path = "./views/front/layout/checkout.php";
-                    break;
-                case "/contact":
-                    $file_path = "./views/front/layout/contact.php";
-                    break;
-                case "/shop-details":
-                    $file_path = "./views/front/layout/shop-details.php";
-                    break;
-                case "/shop":
-                    $file_path = "./views/front/layout/shop.php";
-                    break;
-                case "/cart":
-                    $file_path = "./views/front/layout/cart.php";
-                    break;
-                case "/login":
-                    $file_path = "./views/front/layout/login.php";
-                    break;
-                case "/register":
-                    $file_path = "./views/front/layout/register.php";
-                    break;
+                case strpos($relative_path, "/api/admin/logout") !== false:
+                    $file_path = "./views/admin/api/auth/logout.php";
+                    break;                
                     
                 ### Admin Path
                 case "/admin/dashboard":
@@ -100,14 +83,14 @@
                 case strpos($relative_path, "/admin/user/edit") !== false:
                     $file_path = "./views/admin/layout/user/userEdit.php";
                     break;
-                case "/admin/information":
-                    $file_path = "./views/admin/layout/information/information.php";
+                case "/admin/blog":
+                    $file_path = "./views/admin/layout/blog/blog.php";
                     break;
-                case "/admin/information/add":
-                    $file_path = "./views/admin/layout/information/informationAdd.php";
+                case "/admin/blog/add":
+                    $file_path = "./views/admin/layout/blog/blogAdd.php";
                     break;
-                case strpos($relative_path, "/admin/information/edit") !== false:
-                    $file_path = "./views/admin/layout/information/informationEdit.php";
+                case strpos($relative_path, "/admin/blog/edit") !== false:
+                    $file_path = "./views/admin/layout/blog/blogEdit.php";
                     break;
                 case "/admin/newsletter":
                     $file_path = "./views/admin/layout/newsletter/newsletter.php";
@@ -119,23 +102,42 @@
                     $file_path = "./views/admin/layout/auth/login.php";
                     break;
 
+                
+                ### Client Path
+                case "/":
+                    $file_path = "./views/front/layout/home.php";
+                    break;
+                case "/about":
+                    $file_path = "./views/front/layout/about.php";
+                    break;
+                case strpos($relative_path, "/post") !== false:
+                    $file_path = "./views/front/layout/post.php";
+                    break;
+                case "/blog":
+                    $file_path = "./views/front/layout/blog.php";
+                    break;
+                case "/checkout":
+                    $file_path = "./views/front/layout/checkout.php";
+                    break;
+                case "/contact":
+                    $file_path = "./views/front/layout/contact.php";
+                    break;
+                case strpos($relative_path, "/product") !== false:
+                    $file_path = "./views/front/layout/product.php";
+                    break;
+                case "/shop":
+                    $file_path = "./views/front/layout/shop.php";
+                    break;
+                case "/cart":
+                    $file_path = "./views/front/layout/cart.php";
+                    break;
+                case "/login":
+                    $file_path = "./views/front/layout/login.php";
+                    break;
+                case "/register":
+                    $file_path = "./views/front/layout/register.php";
+                    break;
 
-                ### Client API
-                case strpos($relative_path, "/api/product") !== false:
-                    $file_path = "./views/front/api/product/product.php";
-                    break;    
-                    
-
-                ### Admin API
-                case strpos($relative_path, "/api/admin/orderproduct") !== false:
-                    $file_path = "./views/admin/api/order/orderProduct.php";
-                    break;
-                case strpos($relative_path, "/api/admin/dashboard") !== false:
-                    $file_path = "./views/admin/api/dashboard/dashboard.php";
-                    break;
-                case strpos($relative_path, "/api/admin/logout") !== false:
-                    $file_path = "./views/admin/api/auth/logout.php";
-                    break;
 
                 ### Default Admin 404 Page 
                 default:
