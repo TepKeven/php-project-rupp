@@ -25,7 +25,10 @@
     if(isset($_POST) && !empty($_POST)){
 
         $result = Order::update();
-        print($result);
+        
+        $order_id = intval($_GET["order_id"]);
+        $result = Order::findOne($order_id);
+        // print($result);
 
     }
 

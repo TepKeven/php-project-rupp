@@ -224,8 +224,7 @@ class Order implements Model {
 
         if($result){
 
-            $order_id = $conn->lastInsertId();
-            $order_product_result = OrderProduct::updateManyByIds($order_id, json_decode($order_product_items));
+            $order_product_result = OrderProduct::updateManyByIds($order_id, json_decode($order_product_items, true));
             return $order_product_result;
 
         }
