@@ -108,7 +108,7 @@ class Order implements Model {
 
         $session_token = isset($_SESSION["customer_login_token"]) ? $_SESSION["customer_login_token"] : "";
 
-        $order_customer_id = isset($_SESSION["customer_login_token"]) ? json_decode(Session::findByToken($session_token)["data"])["customer_id"] : NULL;
+        $order_customer_id = isset($_SESSION["customer_login_token"]) ? json_decode(Session::findByToken($session_token)["data"], true)["customer_id"] : NULL;
         $order_first_name = $_POST["order_first_name"];
         $order_last_name = $_POST["order_last_name"];
         $order_email = $_POST["order_email"];
@@ -186,7 +186,7 @@ class Order implements Model {
         $order_company = $_POST["order_company"];
         $order_address = $_POST["order_address"];
         $order_city = $_POST["order_city"];
-        $order_country = Country::findOne($_POST["order_country_id"]);
+        $order_country = Country::findOne($_POST["order_country_id"])["name"];
         $order_country_id = $_POST["order_country_id"];
         $order_payment_id = $_POST["order_payment_id"];
         $order_shipping_id = $_POST["order_shipping_id"];

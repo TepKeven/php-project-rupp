@@ -12,6 +12,9 @@
                 case strpos($relative_path, "/api/product") !== false:
                     $file_path = "./views/front/api/product/product.php";
                     break;    
+                case strpos($relative_path, "/api/logout") !== false:
+                    $file_path = "./views/front/api/auth/logout.php";
+                    break;    
                     
 
                 ### Admin API
@@ -136,6 +139,9 @@
                     break;
                 case "/register":
                     $file_path = "./views/front/layout/register.php";
+                    break;
+                case "/profile":
+                    $file_path = "./views/front/layout/profile.php";
                     break;
 
 

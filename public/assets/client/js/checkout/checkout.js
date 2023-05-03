@@ -4,7 +4,7 @@ function listCartCheckout(){
     var subtotal_price = 0;
     var total_price_tax = 0;
 
-    var cart_products = JSON.parse(localStorage.getItem("cart_items"));
+    var cart_products = JSON.parse(localStorage.getItem("cart_items") == null ? "[]" : localStorage.getItem("cart_items"));
 
     var cart_product_ids = cart_products.map(cart_product => {
         return cart_product.product_id;

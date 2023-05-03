@@ -18,7 +18,22 @@
 
     }
 
+    if(isset($_SESSION["customer_login_token"]) && !empty($_SESSION["customer_login_token"])){
 
+        $session_token = $_SESSION["customer_login_token"];
+
+        $result = Session::checkValid($session_token, 1);
+
+        if($result){
+
+?>
+            <script>
+                window.location.assign("/profile");
+            </script>          
+<?php
+        }
+
+    }
 ?>
 
 

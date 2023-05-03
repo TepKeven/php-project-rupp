@@ -11,9 +11,23 @@
     ?> 
 
         <script>
+
             var result = '<?=json_encode($result)?>';
-            alert(result == "true" ? "Order Successfully" : result)
             localStorage.removeItem("cart_items");
+
+            $(document).ready(function() {
+
+                Swal.fire({
+                    title: result == "true" ? "Order Successfully" : result,
+                    // text: 'Do you want to continue',
+                    icon: 'info',
+                    showDenyButton: false,
+                    showCancelButton: true,
+                    confirmButtonText: 'Yes',
+                })
+                // alert(result == "true" ? "Order Successfully" : result)
+
+            });
         </script>
     
     <?php
@@ -229,8 +243,8 @@
     <!-- Checkout Section End -->
 
     <script>
-        window.onload = function(){
+        $(document).ready(function() {
 
             listCartCheckout();
-        }
+        });
     </script>

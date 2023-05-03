@@ -91,6 +91,7 @@
     <script src="/public/assets/client/js/base.js"></script>
     <script src="/public/assets/client/js/cart/cart.js"></script>
     <script src="/public/assets/client/js/checkout/checkout.js"></script>
+    <script src="/public/assets/client/js/auth/auth.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.7.3/dist/sweetalert2.all.min.js"></script>
 </body>
 

@@ -8,29 +8,23 @@
     require_once("./model/OrderStatus.php");
     require_once("./model/Product.php");
 
-    if(isset($_GET["order_id"]) && !empty($_GET["order_id"])){
-
-        $order_id = intval($_GET["order_id"]);
-
-        $result = Order::findOne($order_id);
-        $customers = Customer::findAll();
-        $countries = Country::findAll();
-        $payments = Payment::findAll();
-        $shippings = Shipment::findAll();
-        $order_statuses = OrderStatus::findAll();
-        $products = Product::findAll();
-
-    }
-
     if(isset($_POST) && !empty($_POST)){
 
         $result = Order::update();
         
-        $order_id = intval($_GET["order_id"]);
-        $result = Order::findOne($order_id);
-        // print($result);
+        print($result);
 
     }
+
+    $order_id = isset($_GET["order_id"]) ? intval($_GET["order_id"]) : 0;
+
+    $result = Order::findOne($order_id);
+    $customers = Customer::findAll();
+    $countries = Country::findAll();
+    $payments = Payment::findAll();
+    $shippings = Shipment::findAll();
+    $order_statuses = OrderStatus::findAll();
+    $products = Product::findAll();
 
 ?>
 
