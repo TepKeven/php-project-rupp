@@ -109,6 +109,48 @@ class Newsletter implements Model {
         }
     }
 
+    public static function sendToAdmin(){
+
+        $mail = new PHPMailer(true);
+        $sender_name = $_POST["contact_name"];
+        $sender_message = $_POST["contact_message"];
+        $sender_email = $_POST["contact_email"];
+
+        try {
+            //Server settings
+            $mail->SMTPDebug = SMTP::DEBUG_OFF;                      
+            $mail->isSMTP();                                            
+            $mail->Host       = 'smtp.gmail.com';                       
+            $mail->SMTPAuth   = true;                                   
+            $mail->Username   = 'keventep94@gmail.com';                 
+            $mail->Password   = 'ukfbcqtktifljkkp';                     
+            $mail->SMTPSecure = PHPMailer::ENCRYPTION_SMTPS;            
+            $mail->Port       = 465;                                    
+
+            //Recipients
+            $mail->setFrom($sender_email, $sender_name);
+    
+            $mail->addAddress("keventep94@gmail.com", "RUPP Group 6");     
+
+            $mail->addReplyTo($sender_email, 'Contact');
+            $mail->addCC("keventep94@gmail.com");
+            $mail->addBCC("keventep94@gmail.com");
+
+            //Content
+            $mail->isHTML(true);                                  
+            $mail->Subject = "Contact Information";
+            $mail->Body    = $sender_message;
+            $mail->AltBody = strip_tags($sender_message);
+
+            $mail->send();
+            return 'Message has been sent successfully';
+
+        } catch (Exception $e) {
+            return "Message could not be sent. Mailer Error: {$mail->ErrorInfo}";
+        }
+
+    }
+
     public static function findAll() {
 
         

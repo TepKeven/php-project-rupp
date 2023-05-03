@@ -247,7 +247,7 @@
                                   <img src=<?=$row["image"] == null ? "/public/assets/no_image.png" : "/public/images/category/" . $row["image"]?> width="100" height="100" />
                                 </td>
                                 <td class="text-center align-middle"><?=$row["name"]?></td>
-                                <td class="text-center align-middle"><?=$row["description"]?></td>
+                                <td class="text-center align-middle"><?=substr(strip_tags(html_entity_decode($row["description"])), 0, 30)?></td>
                                 <td class="text-center align-middle"><?=Category::findOne($row["parent_id"])["name"] ?></td>
                                 <td class="text-center align-middle"><?=$row["sort_order"]?></td>
                                 <td class="text-center align-middle"><?=$row["status"]?></td>

@@ -248,7 +248,7 @@
                                   <img src=<?=$row["image"] == null ? "/public/assets/no_image.png" : "/public/images/product/" . $row["image"]?> width="100" height="100" />
                                 </td>
                                 <td class="text-center align-middle"><?=$row["name"]?></td>
-                                <td class="text-center align-middle"><?=$row["description"]?></td>
+                                <td class="text-center align-middle"><?=substr(strip_tags(html_entity_decode($row["description"])), 0, 30)?></td>
                                 <td class="text-center align-middle"><?=$row["price"]?></td>
                                 <td class="text-center align-middle"><?=$row["quantity"]?></td>
                                 <td class="text-center align-middle"><?=$row["sort_order"]?></td>

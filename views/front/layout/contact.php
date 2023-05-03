@@ -1,3 +1,15 @@
+<?php
+
+    require_once("./model/Newsletter.php");
+
+    if(isset($_POST) && !empty($_POST)){
+
+        $result = Newsletter::sendToAdmin();
+
+    }
+
+?>
+
 <div class="d-flex justify-content-center pt-5">
     <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3908.7706603776874!2d104.88811507491988!3d11.568291888632745!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3109519fe4077d69%3A0x20138e822e434660!2sRUPP%20(Royal%20University%20of%20Phnom%20Penh)!5e0!3m2!1sen!2skh!4v1682163050519!5m2!1sen!2skh" width="85%" height="600" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
 </div>
@@ -29,16 +41,16 @@
                 </div>
                 <div class="col-lg-6 col-md-6">
                     <div class="contact__form">
-                        <form action="#">
+                        <form method="POST" enctype="multipart/form-data">
                             <div class="row">
                                 <div class="col-lg-6">
-                                    <input type="text" placeholder="Name">
+                                    <input type="text" name="contact_name" placeholder="Name">
                                 </div>
                                 <div class="col-lg-6">
-                                    <input type="text" placeholder="Email">
+                                    <input type="text" name="contact_email" placeholder="Email">
                                 </div>
                                 <div class="col-lg-12">
-                                    <textarea placeholder="Message"></textarea>
+                                    <textarea placeholder="Message" name="contact_message"></textarea>
                                     <button type="submit" class="site-btn">Send Message</button>
                                 </div>
                             </div>
