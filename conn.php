@@ -4,7 +4,7 @@
     $username = "root";
     $password = "";
     $database = "phprupp";
-    $port = 3306;
+    $port = 3308;
 
     try {
         $conn = new PDO("mysql:host=$servername;port=$port;dbname=$database", $username, $password);
